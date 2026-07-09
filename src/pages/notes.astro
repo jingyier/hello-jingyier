@@ -1,22 +1,29 @@
 ---
+import { getCollection } from "astro:content";
+import NoteList from "@components/NoteList.astro";
+import SectionHeader from "@components/SectionHeader.astro";
+import SiteHeader from "@components/SiteHeader.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
+
+const notes = (await getCollection("notes")).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
-<BaseLayout title="Notes · jingyier" description="Notes from jingyier.">
+<BaseLayout title="Notes · jingyier" description="Notes on design, development, and quiet systems." pathname="/notes">
   <main class="site-shell">
-    <header class="topbar" aria-label="Site navigation">
-      <a class="brand" href="/">jingyier</a>
-      <nav>
-        <a href="/work">Work</a>
-        <a href="/notes">Notes</a>
-        <a href="/about">About</a>
-      </nav>
-    </header>
-
+    <SiteHeader />
     <section class="page-intro">
       <p class="eyebrow">Notes</p>
       <h1>札记</h1>
-      <p class="lede">这里会承载 Markdown/MDX 内容，适合记录设计、开发、观察与阶段总结。</p>
+      <p class="lede">记录设计判断、开发取舍、素材策略和站点演进。内容先静态管理，等规模变大再接 CMS。</p>
+    </section>
+
+    <section class="content-section">
+      <SectionHeader
+        eyebrow="Journal"
+        title="近期记录"
+        summary="每条札记保留日期、标签和摘要，适合未来扩展到详情页、搜索和 RSS。"
+      />
+      <NoteList items={notes} />
     </section>
   </main>
 </BaseLayout>

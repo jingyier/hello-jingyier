@@ -1,22 +1,29 @@
 ---
+import { getCollection } from "astro:content";
+import SectionHeader from "@components/SectionHeader.astro";
+import SiteHeader from "@components/SiteHeader.astro";
+import WorkList from "@components/WorkList.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
+
+const works = (await getCollection("work")).sort((a, b) => b.data.year - a.data.year);
 ---
 
-<BaseLayout title="Work · jingyier" description="Selected work from jingyier.">
+<BaseLayout title="Work · jingyier" description="Selected work and visual studies from jingyier." pathname="/work">
   <main class="site-shell">
-    <header class="topbar" aria-label="Site navigation">
-      <a class="brand" href="/">jingyier</a>
-      <nav>
-        <a href="/work">Work</a>
-        <a href="/notes">Notes</a>
-        <a href="/about">About</a>
-      </nav>
-    </header>
-
+    <SiteHeader />
     <section class="page-intro">
       <p class="eyebrow">Work</p>
       <h1>作品索引</h1>
-      <p class="lede">首版先保留静态入口，后续将由 Astro Content Collections 驱动作品网格。</p>
+      <p class="lede">用年份、类型、摘要和一张强裁切图片组织作品。首版内容是结构样稿，真实项目可以逐步替换。</p>
+    </section>
+
+    <section class="content-section">
+      <SectionHeader
+        eyebrow="Collection"
+        title="精选与实验"
+        summary="这里刻意避免厚重卡片，让图片、文字和细线构成更像展签的节奏。"
+      />
+      <WorkList items={works} />
     </section>
   </main>
 </BaseLayout>

@@ -1,1 +1,35 @@
-[]
+[
+  {
+    "id": "home-hero-studio",
+    "platform": "Unsplash",
+    "sourceUrl": "https://unsplash.com/s/photos/art-studio",
+    "assetUrl": "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=82",
+    "usage": "Homepage hero and Quiet Index cover placeholder",
+    "license": "Unsplash License",
+    "downloadedAt": null,
+    "author": "To be finalized after selecting the downloaded asset",
+    "notes": "Remote placeholder chosen for art-studio/editorial working atmosphere. Download final asset locally before production launch."
+  },
+  {
+    "id": "work-paper-room",
+    "platform": "Unsplash",
+    "sourceUrl": "https://unsplash.com/s/photos/quiet-interior",
+    "assetUrl": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=82",
+    "usage": "Paper Room work cover placeholder",
+    "license": "Unsplash License",
+    "downloadedAt": null,
+    "author": "To be finalized after selecting the downloaded asset",
+    "notes": "Remote placeholder. Replace with a locally downloaded quiet interior or paper texture image."
+  },
+  {
+    "id": "work-gallery-notes",
+    "platform": "Unsplash",
+    "sourceUrl": "https://unsplash.com/s/photos/gallery-architecture",
+    "assetUrl": "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1400&q=82",
+    "usage": "Gallery Notes work cover placeholder",
+    "license": "Unsplash License",
+    "downloadedAt": null,
+    "author": "To be finalized after selecting the downloaded asset",
+    "notes": "Remote placeholder for architectural/gallery geometry."
+  }
+]

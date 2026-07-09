@@ -1,22 +1,38 @@
 ---
+import SiteHeader from "@components/SiteHeader.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
+
+const aboutImage = "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=82";
 ---
 
-<BaseLayout title="About · jingyier" description="About jingyier.">
+<BaseLayout
+  title="About · jingyier"
+  description="About jingyier, a static-first site for artful work and notes."
+  image={aboutImage}
+  pathname="/about"
+>
   <main class="site-shell">
-    <header class="topbar" aria-label="Site navigation">
-      <a class="brand" href="/">jingyier</a>
-      <nav>
-        <a href="/work">Work</a>
-        <a href="/notes">Notes</a>
-        <a href="/about">About</a>
-      </nav>
-    </header>
-
-    <section class="page-intro">
-      <p class="eyebrow">About</p>
-      <h1>关于 jingyier</h1>
-      <p class="lede">这里会沉淀项目的背景、联系方式、创作方向与长期演进线索。</p>
+    <SiteHeader />
+    <section class="about-layout">
+      <div>
+        <p class="eyebrow">About</p>
+        <h1>关于 jingyier</h1>
+      </div>
+      <div class="about-copy">
+        <p>
+          jingyier 的首版目标不是堆叠功能，而是建立一个清晰、轻量、能长期生长的表达空间。它以静态内容为底座，
+          把作品、札记、图片和后续的 JSON 动态能力分层处理。
+        </p>
+        <p>
+          当前风格选择“策展杂志感”：少量颜色、明确层级、真实影像、低 JavaScript 成本。后续可以扩展到作品详情、
+          RSS、搜索、多语言、表单和 CMS，但不会牺牲首屏速度与内容可读性。
+        </p>
+        <p class="contact-line">Contact placeholder: hello@jingyier.com</p>
+      </div>
+      <figure class="about-figure">
+        <img src={aboutImage} alt="Quiet interior with natural light and a soft architectural mood." />
+        <figcaption>About visual placeholder / replace after final asset selection.</figcaption>
+      </figure>
     </section>
   </main>
 </BaseLayout>

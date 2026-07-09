@@ -1,37 +1,62 @@
 ---
+import { getCollection } from "astro:content";
+import NoteList from "@components/NoteList.astro";
+import SectionHeader from "@components/SectionHeader.astro";
+import SiteHeader from "@components/SiteHeader.astro";
+import WorkList from "@components/WorkList.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
+
+const works = (await getCollection("work")).sort((a, b) => b.data.year - a.data.year);
+const featuredWorks = works.filter((work) => work.data.featured).slice(0, 2);
+const notes = (await getCollection("notes")).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const latestNotes = notes.slice(0, 3);
+const heroImage = "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=82";
 ---
 
 <BaseLayout
   title="jingyier"
-  description="jingyier is a lightweight static site shaped for art, notes, work, and quiet expansion."
+  description="jingyier is a curated, lightweight static site for work, notes, image studies, and quiet expansion."
+  image={heroImage}
 >
   <main class="site-shell">
-    <header class="topbar" aria-label="Site navigation">
-      <a class="brand" href="/">jingyier</a>
-      <nav>
-        <a href="/work">Work</a>
-        <a href="/notes">Notes</a>
-        <a href="/about">About</a>
-      </nav>
-    </header>
+    <SiteHeader />
 
-    <section class="hero" aria-labelledby="hero-title">
-      <p class="eyebrow">Static first · artful by default</p>
-      <h1 id="hero-title">jingyier</h1>
-      <p class="lede">
-        一个轻量、克制、可扩展的静态网站基线，用来承载作品、札记、影像与后续的小型动态能力。
-      </p>
-      <div class="hero-actions" aria-label="Primary actions">
-        <a class="text-link" href="/work">Explore work</a>
-        <a class="text-link" href="/notes">Read notes</a>
+    <section class="magazine-hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">Curated static journal</p>
+        <h1 id="hero-title">jingyier</h1>
+        <p class="lede">
+          一个轻量、克制、可扩展的静态网站，用编辑部式的节奏承载作品、札记、影像与未来的小型动态能力。
+        </p>
       </div>
+      <figure class="hero-figure">
+        <img src={heroImage} alt="Sunlit studio table with paper, tools, and an editorial working atmosphere." />
+        <figcaption>Phase 1 visual placeholder / replace with a selected local asset.</figcaption>
+      </figure>
     </section>
 
-    <section class="baseline" aria-label="Project baseline">
-      <p>Astro static output</p>
-      <p>Cloudflare Pages ready</p>
-      <p>Vercel JSON API ready</p>
+    <section class="issue-strip" aria-label="Project baseline">
+      <p><span>01</span> Astro static output</p>
+      <p><span>02</span> Cloudflare Pages ready</p>
+      <p><span>03</span> Vercel JSON API ready</p>
+    </section>
+
+    <section class="content-section">
+      <SectionHeader
+        eyebrow="Selected work"
+        title="作品以索引开始"
+        summary="首版以示例内容建立信息密度、图片比例和作品字段，后续只需替换为真实项目。"
+      />
+      <WorkList items={featuredWorks} />
+    </section>
+
+    <section class="content-section">
+      <SectionHeader
+        eyebrow="Latest notes"
+        title="札记保留思考的温度"
+        summary="Markdown 内容集合让写作保持轻量，也方便之后接入 CMS 或 RSS 分发。"
+      />
+      <NoteList items={latestNotes} />
     </section>
   </main>
 </BaseLayout>

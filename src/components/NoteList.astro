@@ -1,0 +1,41 @@
+---
+interface NoteItem {
+  slug: string;
+  data: {
+    title: string;
+    date: Date;
+    summary: string;
+    tags: string[];
+    featured: boolean;
+  };
+}
+
+interface Props {
+  items: NoteItem[];
+}
+
+const { items } = Astro.props;
+const formatter = new Intl.DateTimeFormat("zh-CN", {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit"
+});
+---
+
+<div class="note-list">
+  {
+    items.map((item) => (
+      <article class="note-item">
+        <p class="meta-line">
+          <time datetime={item.data.date.toISOString()}>{formatter.format(item.data.date)}</time>
+          {item.data.featured && <span>Featured</span>}
+        </p>
+        <h3>{item.data.title}</h3>
+        <p>{item.data.summary}</p>
+        <div class="tag-row" aria-label="Tags">
+          {item.data.tags.map((tag) => <span>{tag}</span>)}
+        </div>
+      </article>
+    ))
+  }
+</div>
