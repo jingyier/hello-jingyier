@@ -5,10 +5,15 @@ const links = [
   { href: "/about", label: "About" }
 ];
 
+interface Props {
+  variant?: "default" | "spatial";
+}
+
+const { variant = "default" } = Astro.props;
 const currentPath = Astro.url.pathname;
 ---
 
-<header class="site-header" aria-label="Site navigation">
+<header class:list={["site-header", variant === "spatial" && "site-header-spatial"]} aria-label="Site navigation">
   <a class="site-brand" href="/" aria-label="jingyier home">jingyier</a>
   <nav>
     {

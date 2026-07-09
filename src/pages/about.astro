@@ -1,14 +1,11 @@
 ---
 import SiteHeader from "@components/SiteHeader.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
-
-const aboutImage = "/images/p6.jpg";
 ---
 
 <BaseLayout
   title="About · jingyier"
-  description="About jingyier, a softer personal site for notes, images, and small experiments."
-  image={aboutImage}
+  description="About jingyier, a static-first geometric archive for notes, images, and small experiments."
   pathname="/about"
 >
   <main class="site-shell">
@@ -16,23 +13,24 @@ const aboutImage = "/images/p6.jpg";
     <section class="about-layout">
       <div>
         <p class="eyebrow">About</p>
-        <h1>关于 jingyier</h1>
+        <h1>关于这座静态建筑</h1>
       </div>
       <div class="about-copy">
         <p>
-          jingyier 现在更像一个个人小房间：可以贴喜欢的图，写最近的念头，放一点不那么正式的作品和实验。
-          它仍然是静态优先、轻量可扩展的，但语气会更松弛，更像本人。
+          jingyier 现在像一座小型几何档案馆：可以放作品、札记、视觉实验，也可以继续保持静态优先。
+          它不依赖 WebGL、Three.js 或大型运行时，空间感由 CSS 变换和原生交互完成。
         </p>
         <p>
-          视觉上会借一点复古海报、雨夜窗户、暖黄色角色和手帐贴纸感。后续仍可以扩展到作品详情、RSS、搜索、
-          多语言、表单和 CMS，但不会把它做成冷冰冰的后台。
+          视觉上借用非欧几里得建筑、低饱和深色材料、锈迹橙、体积光和纸面噪点。后续仍可以扩展到作品详情、
+          RSS、搜索、多语言、表单和 CMS，但不牺牲轻量性能。
         </p>
         <p class="contact-line">Contact placeholder: hello@jingyier.com / 或换成你的社交主页</p>
       </div>
-      <figure class="about-figure">
-        <img src={aboutImage} alt="An illustrated rainy window scene with handwritten words on glass." />
-        <figcaption>miss you / rainy-window mood board</figcaption>
-      </figure>
+      <div class="about-figure" role="img" aria-label="A pure CSS impossible stair and archive chamber illustration">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </section>
   </main>
 </BaseLayout>

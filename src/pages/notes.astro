@@ -13,15 +13,15 @@ const notes = (await getCollection("notes")).sort((a, b) => b.data.date.valueOf(
     <SiteHeader />
     <section class="page-intro">
       <p class="eyebrow">Notes</p>
-      <h1>札记</h1>
-      <p class="lede">写最近的灵感、设计判断、开发取舍，也写一些没那么有用但很可爱的东西。</p>
+      <h1>暗室札记</h1>
+      <p class="lede">灵感、设计判断和开发取舍像被收进抽屉的纸片，等待某一次视角旋转时露出边缘。</p>
     </section>
 
     <section class="content-section">
       <SectionHeader
         eyebrow="Journal"
-        title="近期小纸条"
-        summary="每条札记保留日期、标签和摘要，未来可以扩展到详情页、搜索和 RSS。"
+        title="低噪声的内容记录"
+        summary="每条札记保留日期、标签和摘要，仍然适合扩展到详情页、搜索、RSS 和轻量 JSON。"
       />
       <NoteList items={notes} />
     </section>

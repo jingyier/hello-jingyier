@@ -21,9 +21,23 @@ const { items } = Astro.props;
 
 <div class="work-grid">
   {
-    items.map((item) => (
+    items.map((item, index) => (
       <article class="work-item" id={item.slug}>
-        <img src={item.data.cover} alt={item.data.coverAlt} loading="lazy" />
+        <div class="work-cover" role="img" aria-label={item.data.coverAlt}>
+          <svg viewBox="0 0 320 220" aria-hidden="true" focusable="false">
+            <defs>
+              <linearGradient id={`oxide-${index}`} x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0%" stop-color="currentColor" stop-opacity="0.85" />
+                <stop offset="100%" stop-color="currentColor" stop-opacity="0.16" />
+              </linearGradient>
+            </defs>
+            <path d="M36 172 92 74h84l55 98Z" fill={`url(#oxide-${index})`} />
+            <path d="M92 74h84l33 58H126Z" fill="none" stroke="currentColor" stroke-width="2" />
+            <path d="M36 172h195l43-43" fill="none" stroke="currentColor" stroke-width="2" />
+            <path d="M126 132 92 74 36 172" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.55" />
+            <circle cx="252" cy="48" r="13" fill="currentColor" opacity="0.8" />
+          </svg>
+        </div>
         <div class="work-copy">
           <p class="meta-line">
             {item.data.year} / {item.data.type}
