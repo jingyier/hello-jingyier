@@ -2,20 +2,20 @@ import { defineCollection, z } from "astro:content";
 import { glob } from "astro/loaders";
 
 const work = defineCollection({
-  type: "content",
+  loader: glob({ pattern: "**/*.md", base: "./src/content/work" }),
   schema: z.object({
     title: z.string(),
     year: z.number(),
     type: z.string(),
     summary: z.string(),
-    cover: z.string().url(),
+    cover: z.string(),
     coverAlt: z.string(),
     featured: z.boolean().default(false)
   })
 });
 
 const notes = defineCollection({
-  type: "content",
+  loader: glob({ pattern: "**/*.md", base: "./src/content/notes" }),
   schema: z.object({
     title: z.string(),
     date: z.date(),

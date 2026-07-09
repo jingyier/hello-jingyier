@@ -1,11 +1,11 @@
 ---
-title: Editorial rhythm for a small site
+title: 下雨天的窗口
 date: 2026-07-08
-summary: A quiet layout can still feel rich when hierarchy, spacing, image scale, and text density are tuned deliberately.
+summary: 雨夜图让 About 页有了私人情绪：不是介绍公司，而是在介绍一个会想念、会记录的人。
 tags:
   - design
-  - typography
+  - diary
 featured: true
 ---
 
-The site uses an editorial structure instead of decorative cards or heavy interface chrome.
+The site keeps the structure, but the mood becomes softer and more personal.

@@ -8,20 +8,20 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 const notes = (await getCollection("notes")).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
-<BaseLayout title="Notes · jingyier" description="Notes on design, development, and quiet systems." pathname="/notes">
+<BaseLayout title="Notes · jingyier" description="Personal notes on moods, design, development, and small systems." pathname="/notes">
   <main class="site-shell">
     <SiteHeader />
     <section class="page-intro">
       <p class="eyebrow">Notes</p>
       <h1>札记</h1>
-      <p class="lede">记录设计判断、开发取舍、素材策略和站点演进。内容先静态管理，等规模变大再接 CMS。</p>
+      <p class="lede">写最近的灵感、设计判断、开发取舍，也写一些没那么有用但很可爱的东西。</p>
     </section>
 
     <section class="content-section">
       <SectionHeader
         eyebrow="Journal"
-        title="近期记录"
-        summary="每条札记保留日期、标签和摘要，适合未来扩展到详情页、搜索和 RSS。"
+        title="近期小纸条"
+        summary="每条札记保留日期、标签和摘要，未来可以扩展到详情页、搜索和 RSS。"
       />
       <NoteList items={notes} />
     </section>

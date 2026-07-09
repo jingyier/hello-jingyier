@@ -1,11 +1,11 @@
 ---
-title: Gallery Notes
+title: Red Geometry Pause
 year: 2026
-type: Curation
-summary: A modular way to introduce selected work with year, medium, short context, and a strong visual crop.
-cover: https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1400&q=82
-coverAlt: Abstract architectural surface with a composed gallery-like geometry.
+type: Graphic study
+summary: 强红、暖黄、黑色几何让页面有一点俏皮的冲撞感，负责把个人风格拉出来。
+cover: /images/p5.jpg
+coverAlt: A bold red, yellow, black, and cream graphic poster with a simple yellow character.
 featured: false
 ---
 
-This work item previews the collection structure that will later hold real projects.
+This study gives the collection a sharper graphic accent.

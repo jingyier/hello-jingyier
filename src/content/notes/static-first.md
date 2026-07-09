@@ -1,11 +1,11 @@
 ---
-title: Static first, dynamic when needed
+title: 轻一点，但不要散
 date: 2026-07-09
-summary: jingyier keeps the public experience static by default, then adds edge JSON only where freshness or interaction really matters.
+summary: jingyier 继续保持静态优先，只是把外表从商务目录调成更像个人房间的小站。
 tags:
   - architecture
-  - performance
+  - mood
 featured: true
 ---
 
-The first version should be readable, fast, and portable before it becomes programmable.
+The first version should be readable, fast, and portable, but it does not need to be overly serious.

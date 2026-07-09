@@ -1,11 +1,11 @@
 ---
-title: Paper Room
+title: Main Character Moment
 year: 2026
-type: Visual direction
-summary: A study in paper, light, and negative space for the site's image-led sections and future gallery pages.
-cover: https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=82
-coverAlt: Quiet interior with natural light and a soft architectural mood.
+type: Mood scene
+summary: 有一点舞台光，有一点自我宣言：网站不必严肃，也可以像主角登场一样可爱。
+cover: /images/p3.jpg
+coverAlt: A close-up of a yellow character under dramatic light with the words I am the protagonist of my life script.
 featured: true
 ---
 
-This work item sets the softer photographic language for about and archive pages.
+This scene keeps the site expressive without making the interface heavy.

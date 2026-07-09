@@ -22,7 +22,7 @@ const { items } = Astro.props;
 <div class="work-grid">
   {
     items.map((item) => (
-      <article class="work-item">
+      <article class="work-item" id={item.slug}>
         <img src={item.data.cover} alt={item.data.coverAlt} loading="lazy" />
         <div class="work-copy">
           <p class="meta-line">

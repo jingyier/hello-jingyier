@@ -8,20 +8,20 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 const works = (await getCollection("work")).sort((a, b) => b.data.year - a.data.year);
 ---
 
-<BaseLayout title="Work · jingyier" description="Selected work and visual studies from jingyier." pathname="/work">
+<BaseLayout title="Work · jingyier" description="Small scenes, posters, and visual studies from jingyier." pathname="/work">
   <main class="site-shell">
     <SiteHeader />
     <section class="page-intro">
       <p class="eyebrow">Work</p>
-      <h1>作品索引</h1>
-      <p class="lede">用年份、类型、摘要和一张强裁切图片组织作品。首版内容是结构样稿，真实项目可以逐步替换。</p>
+      <h1>小画面索引</h1>
+      <p class="lede">这里先不摆出很正式的作品集姿态，更像把喜欢的画面、实验、片段和自我介绍慢慢贴上墙。</p>
     </section>
 
     <section class="content-section">
       <SectionHeader
         eyebrow="Collection"
-        title="精选与实验"
-        summary="这里刻意避免厚重卡片，让图片、文字和细线构成更像展签的节奏。"
+        title="轻一点，也鲜明一点"
+        summary="暖黄、雨夜、复古红和一点电影感，会成为 jingyier 的第一版视觉记忆。"
       />
       <WorkList items={works} />
     </section>

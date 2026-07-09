@@ -10,12 +10,12 @@ const works = (await getCollection("work")).sort((a, b) => b.data.year - a.data.
 const featuredWorks = works.filter((work) => work.data.featured).slice(0, 2);
 const notes = (await getCollection("notes")).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const latestNotes = notes.slice(0, 3);
-const heroImage = "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=82";
+const heroImage = "/images/p4.jpg";
 ---
 
 <BaseLayout
   title="jingyier"
-  description="jingyier is a curated, lightweight static site for work, notes, image studies, and quiet expansion."
+  description="jingyier is a light personal site for small joys, notes, visual experiments, and gentle self-expression."
   image={heroImage}
 >
   <main class="site-shell">
@@ -23,38 +23,53 @@ const heroImage = "https://images.unsplash.com/photo-1497366754035-f200968a6e72?
 
     <section class="magazine-hero" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <p class="eyebrow">Curated static journal</p>
+        <p class="eyebrow">Soft personal playground</p>
         <h1 id="hero-title">jingyier</h1>
         <p class="lede">
-          一个轻量、克制、可扩展的静态网站，用编辑部式的节奏承载作品、札记、影像与未来的小型动态能力。
+          把一点点快乐、雨天、海报感和自己的小剧本放在这里。轻量，但不冷淡；清楚，但有个人脾气。
         </p>
       </div>
       <figure class="hero-figure">
-        <img src={heroImage} alt="Sunlit studio table with paper, tools, and an editorial working atmosphere." />
-        <figcaption>Phase 1 visual placeholder / replace with a selected local asset.</figcaption>
+        <img src={heroImage} alt="A warm illustrated yellow character holding a flower inside an ornate poster frame." />
+        <figcaption>doux · rond · heureux / soft, round, happy</figcaption>
       </figure>
     </section>
 
     <section class="issue-strip" aria-label="Project baseline">
-      <p><span>01</span> Astro static output</p>
-      <p><span>02</span> Cloudflare Pages ready</p>
-      <p><span>03</span> Vercel JSON API ready</p>
+      <p><span>01</span> today feels lighter</p>
+      <p><span>02</span> small notes, big mood</p>
+      <p><span>03</span> static site, soft heart</p>
+    </section>
+
+    <section class="mood-board" aria-label="Mood board">
+      <figure>
+        <img src="/images/p1.jpg" alt="A yellow character standing in dramatic rain and warm light." loading="lazy" />
+        <figcaption>rain, but make it golden</figcaption>
+      </figure>
+      <figure>
+        <img src="/images/p2.jpg" alt="A yellow character standing on an old balcony with petals in the air." loading="lazy" />
+        <figcaption>tiny stage, soft entrance</figcaption>
+      </figure>
+      <figure>
+        <img src="/images/p6.jpg" alt="An illustrated rainy window scene with handwritten words on glass." loading="lazy" />
+        <figcaption>miss-you weather</figcaption>
+      </figure>
     </section>
 
     <section class="content-section">
       <SectionHeader
-        eyebrow="Selected work"
-        title="作品以索引开始"
-        summary="首版以示例内容建立信息密度、图片比例和作品字段，后续只需替换为真实项目。"
+        eyebrow="Little scenes"
+        title="把喜欢的画面收进来"
+        summary="这些不是严肃作品集，更像一排贴在墙上的小心情：有雨、有光、有花，也有一点主角登场。"
       />
       <WorkList items={featuredWorks} />
     </section>
 
     <section class="content-section">
       <SectionHeader
-        eyebrow="Latest notes"
-        title="札记保留思考的温度"
-        summary="Markdown 内容集合让写作保持轻量，也方便之后接入 CMS 或 RSS 分发。"
+        eyebrow="Tiny notes"
+        title="写下最近的自己"
+        summary="保留 Markdown 的轻，写灵感、日常、项目碎片，像给未来的自己留便签。"
       />
       <NoteList items={latestNotes} />
     </section>

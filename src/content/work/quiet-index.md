@@ -1,11 +1,11 @@
 ---
-title: Quiet Index
+title: Doux Rond Heureux
 year: 2026
-type: Editorial system
-summary: A calm index for arranging works, fragments, and visual studies without turning the site into a heavy application.
-cover: https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1400&q=82
-coverAlt: Sunlit studio table with paper, tools, and an editorial working atmosphere.
+type: Soft poster
+summary: 一张把“圆圆的快乐”放到正中央的复古海报，也给网站定下更轻松的第一口气。
+cover: /images/p4.jpg
+coverAlt: A warm illustrated yellow character holding a flower inside an ornate poster frame.
 featured: true
 ---
 
-This placeholder work item defines the editorial rhythm for the first version of jingyier.
+This visual sets the softer, more personal tone for the first version of jingyier.
