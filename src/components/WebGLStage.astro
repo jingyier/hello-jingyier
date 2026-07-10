@@ -1,0 +1,37 @@
+---
+interface Props {
+  label?: string;
+}
+
+const { label = "Generative neon WebGL stage" } = Astro.props;
+---
+
+<div class="webgl-stage" data-webgl-stage>
+  <canvas class="webgl-stage-canvas" data-webgl-canvas aria-hidden="true"></canvas>
+  <div class="webgl-stage-fallback" aria-hidden="true"></div>
+  <div class="webgl-stage-grid" aria-hidden="true"></div>
+  <div class="webgl-stage-content" aria-label={label}>
+    <slot />
+  </div>
+</div>
+
+<script>
+  import { initNanoStage } from "../scripts/gl/scene";
+
+  const bootStages = () => {
+    document.querySelectorAll<HTMLElement>("[data-webgl-stage]").forEach((stage) => {
+      if (stage.dataset.webglReady === "true") {
+        return;
+      }
+
+      stage.dataset.webglReady = "true";
+      initNanoStage(stage);
+    });
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bootStages, { once: true });
+  } else {
+    bootStages();
+  }
+</script>

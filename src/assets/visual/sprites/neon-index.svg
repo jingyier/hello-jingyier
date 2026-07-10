@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="Neon index sprite">
+  <path fill="none" stroke="#42ffd2" stroke-width="8" d="M36 40h126l42 42v118H36z"/>
+  <path fill="#ff3b21" d="M58 62h52v52H58z"/>
+  <path fill="#f8ff2f" d="M132 62h28v118h-28z"/>
+  <path fill="none" stroke="#9b5cff" stroke-width="6" d="M58 146h48m-48 24h48m102-82h-42V46"/>
+</svg>

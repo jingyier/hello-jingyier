@@ -1,174 +1,166 @@
 ---
-import { getCollection } from "astro:content";
-import NoteList from "@components/NoteList.astro";
-import SectionHeader from "@components/SectionHeader.astro";
-import SiteHeader from "@components/SiteHeader.astro";
-import WorkList from "@components/WorkList.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
+import silentBloomScriptUrl from "../scripts/silent-bloom.js?url";
 
-const works = (await getCollection("work")).sort((a, b) => b.data.year - a.data.year);
-const featuredWorks = works.filter((work) => work.data.featured).slice(0, 2);
-const notes = (await getCollection("notes")).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const latestNotes = notes.slice(0, 3);
+const backgrounds = [
+  {
+    id: "opening",
+    title: "Opening Silence",
+    label: "触摸前",
+    src: "/images/silent-bloom/backgrounds/opening-silence.png"
+  },
+  {
+    id: "touch",
+    title: "First Touch",
+    label: "播种",
+    src: "/images/silent-bloom/backgrounds/opening-silence.png"
+  },
+  {
+    id: "breath",
+    title: "Breathing Path",
+    label: "呼吸",
+    src: "/images/silent-bloom/backgrounds/breathing-path.png"
+  },
+  {
+    id: "crystal",
+    title: "Crystal Resonance",
+    label: "共鸣",
+    src: "/images/silent-bloom/backgrounds/crystal-resonance.png"
+  },
+  {
+    id: "rain",
+    title: "Seed Rain",
+    label: "雨落",
+    src: "/images/silent-bloom/backgrounds/seed-rain.png"
+  },
+  {
+    id: "night",
+    title: "Night Garden",
+    label: "保存",
+    src: "/images/silent-bloom/backgrounds/night-result.png"
+  }
+];
 ---
 
 <BaseLayout
-  title="jingyier"
-  description="jingyier is a static-first geometric archive for notes, visual studies, and quiet digital experiments."
+  title="静默花园 / Silent Bloom Garden"
+  description="A mobile-first interactive meditation garden where slow touch paths plant breathing flowers in a quiet alien meadow."
+  image="/images/silent-bloom/backgrounds/night-result.png"
 >
-  <main class="site-shell spatial-site" data-spatial-site>
-    <SiteHeader variant="spatial" />
-
-    <section class="spatial-hero" aria-labelledby="hero-title">
-      <nav class="camera-nav" aria-label="Camera views">
-        <button class="camera-button is-active" type="button" data-camera="0" aria-pressed="true">Gate</button>
-        <button class="camera-button" type="button" data-camera="1" aria-pressed="false">Work</button>
-        <button class="camera-button" type="button" data-camera="2" aria-pressed="false">Notes</button>
-        <button class="camera-button" type="button" data-camera="3" aria-pressed="false">About</button>
-      </nav>
-
-      <div class="scene-wrap" aria-label="Rotating geometric document structure">
-        <div class="parallax-layer layer-back" aria-hidden="true"></div>
-        <div class="archive-rig" aria-hidden="true">
-          <span class="rig-column rig-column-left"></span>
-          <span class="rig-column rig-column-right"></span>
-          <span class="rig-bridge"></span>
-          <span class="rig-stair rig-stair-one"></span>
-          <span class="rig-stair rig-stair-two"></span>
-        </div>
-        <div class="camera" data-camera-stage>
-          <article class="plane plane-gate" data-plane="0">
-            <p class="plane-index">static archive / 001</p>
-            <h1 id="hero-title">jingyier</h1>
-            <p class="lede">
-              一座保持静态、轻量、低噪声的几何档案馆。内容不是向下滚动出现，而是在视角切换中被照亮。
-            </p>
-            <div class="signal-row" aria-label="Site constraints">
-              <span>Astro</span>
-              <span>Markdown</span>
-              <span>CSS 3D</span>
-              <span>0 runtime</span>
-            </div>
-          </article>
-
-          <article class="plane plane-work" data-plane="1">
-            <SectionHeader
-              eyebrow="Work"
-              title="混凝土里的视觉样本"
-              summary="作品像被嵌入墙体的标本，保留标题、年份和类型，用矢量几何替代位图封面。"
-            />
-            <WorkList items={featuredWorks} />
-          </article>
-
-          <article class="plane plane-notes" data-plane="2">
-            <SectionHeader
-              eyebrow="Notes"
-              title="被灯束扫过的札记"
-              summary="Markdown 仍是主体，界面只负责制造空间、阴影和阅读节奏。"
-            />
-            <NoteList items={latestNotes} />
-          </article>
-
-          <article class="plane plane-about" data-plane="3">
-            <p class="plane-index">manifest / 004</p>
-            <h2>轻量不是退让，是结构选择</h2>
-            <p>
-              这个静态站拒绝重型运行时、位图贴图和 WebGL。空间感来自 CSS transform、SVG 噪点、
-              渐变光束和可降级的交互层。
-            </p>
-            <a class="text-link" href="/about">进入关于页</a>
-          </article>
-        </div>
-        <div class="scene-plinth" aria-hidden="true"></div>
-        <div class="parallax-layer layer-front" aria-hidden="true"></div>
+  <main class="garden-app" data-garden-app data-chapter="opening" data-breathing="false" data-resonance="false">
+    <section class="garden-shell" aria-label="Silent Bloom Garden interactive prototype">
+      <div class="garden-copy">
+        <p class="garden-kicker">Silent Bloom Garden</p>
+        <h1>静默花园</h1>
+        <p>
+          在土壤上慢慢播种。之后轻触漂浮物，让花园一层层进入呼吸、共鸣、雨落与夜色。
+        </p>
       </div>
+
+      <div class="phone-frame" aria-label="静默花园手机体验">
+        <div class="phone-status" aria-hidden="true">
+          <span>11:48</span>
+          <span class="status-dots">
+            <i></i>
+            <i></i>
+            <i></i>
+          </span>
+        </div>
+
+        <div class="garden-stage" data-stage>
+          <div class="scene-stack" aria-hidden="true">
+            {
+              backgrounds.map((background) => (
+                <img
+                  class="scene-image"
+                  data-scene={background.id}
+                  src={background.src}
+                  alt=""
+                  loading={background.id === "opening" ? "eager" : "lazy"}
+                />
+              ))
+            }
+          </div>
+
+          <div class="paper-grain" aria-hidden="true"></div>
+          <div class="prop-layer" aria-hidden="true">
+            <img
+              class="ground-prop ground-prop-opening"
+              src="/images/silent-bloom/props/glow-moss-blooms.png"
+              alt=""
+              loading="eager"
+            />
+            <img
+              class="ground-prop ground-prop-touch"
+              src="/images/silent-bloom/props/glow-moss-blooms.png"
+              alt=""
+              loading="lazy"
+            />
+            <img
+              class="ground-prop ground-prop-breath"
+              src="/images/silent-bloom/props/glow-moss-blooms.png"
+              alt=""
+              loading="lazy"
+            />
+            <img
+              class="ground-prop ground-prop-crystal"
+              src="/images/silent-bloom/props/glow-moss-blooms.png"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <svg class="trail-canvas" data-trail viewBox="0 0 390 844" preserveAspectRatio="none" aria-hidden="true">
+            <path data-trail-path d="" />
+          </svg>
+          <div class="seed-rain" data-rain aria-hidden="true"></div>
+          <div class="sprite-layer" data-sprites aria-hidden="true"></div>
+
+          <button class="guide-target" type="button" data-guide aria-label="推进静默花园场景">
+            <img class="guide-image guide-image-rest" src="/images/silent-bloom/props/guide-rest.png" alt="" loading="eager" />
+            <img class="guide-image guide-image-active" src="/images/silent-bloom/props/guide-active.png" alt="" loading="lazy" />
+          </button>
+
+          <div class="chapter-panel" aria-live="polite">
+            <span data-phase-label>Opening Silence</span>
+            <strong data-phase-title>一片还没有被触碰的荒原</strong>
+          </div>
+
+          <div class="breath-orb" data-breath-orb aria-hidden="true">
+            <span></span>
+          </div>
+
+          <div class="gesture-pad" data-pad aria-label="只在土壤上滑动播种" role="application"></div>
+        </div>
+
+        <div class="garden-controls" aria-label="Meditation controls">
+          <button class="icon-control" type="button" data-reset aria-label="重置花园">
+            <span aria-hidden="true">↺</span>
+          </button>
+          <div class="ritual-meter" aria-label="花园生长进度">
+            <span data-meter></span>
+          </div>
+          <button class="save-control" type="button" data-finish>保存夜园</button>
+        </div>
+      </div>
+
+      <aside class="ritual-map" aria-label="Current ritual state">
+        {
+          backgrounds.map((background, index) => (
+            <button
+              class:list={["chapter-step", index === 0 && "is-active"]}
+              type="button"
+              data-step={background.id}
+              aria-pressed={index === 0 ? "true" : "false"}
+            >
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <strong>{background.label}</strong>
+              <em>{background.title}</em>
+            </button>
+          ))
+        }
+      </aside>
     </section>
   </main>
 
-  <script is:inline>
-    (() => {
-      const initSpatialSite = () => {
-        const root = document.querySelector("[data-spatial-site]");
-        const stage = document.querySelector("[data-camera-stage]");
-        const buttons = Array.from(document.querySelectorAll("[data-camera]"));
-
-        if (!root || !stage || !buttons.length) {
-          return;
-        }
-
-        const views = [
-          { rx: -11, ry: -26, z: 0 },
-          { rx: -9, ry: -116, z: -28 },
-          { rx: -14, ry: -206, z: -16 },
-          { rx: -8, ry: -296, z: -30 }
-        ];
-
-        let frame = 0;
-        let targetX = 0;
-        let targetY = 0;
-        let currentX = 0;
-        let currentY = 0;
-
-        const setView = (index) => {
-          const view = views[index] || views[0];
-          root.setAttribute("data-active-camera", String(index));
-          stage.style.setProperty("--rotate-x", `${view.rx}deg`);
-          stage.style.setProperty("--rotate-y", `${view.ry}deg`);
-          stage.style.setProperty("--camera-z", `${view.z}px`);
-
-          buttons.forEach((button, buttonIndex) => {
-            const active = buttonIndex === index;
-            button.classList.toggle("is-active", active);
-            button.setAttribute("aria-pressed", String(active));
-          });
-        };
-
-        const renderParallax = () => {
-          frame = 0;
-          currentX += (targetX - currentX) * 0.14;
-          currentY += (targetY - currentY) * 0.14;
-          root.style.setProperty("--parallax-x", currentX.toFixed(3));
-          root.style.setProperty("--parallax-y", currentY.toFixed(3));
-
-          if (Math.abs(targetX - currentX) > 0.001 || Math.abs(targetY - currentY) > 0.001) {
-            frame = window.requestAnimationFrame(renderParallax);
-          }
-        };
-
-        buttons.forEach((button, index) => {
-          button.addEventListener("click", () => setView(index));
-        });
-
-        root.addEventListener(
-          "pointermove",
-          (event) => {
-            targetX = event.clientX / window.innerWidth - 0.5;
-            targetY = event.clientY / window.innerHeight - 0.5;
-
-            if (!frame) {
-              frame = window.requestAnimationFrame(renderParallax);
-            }
-          },
-          { passive: true }
-        );
-
-        root.addEventListener("pointerleave", () => {
-          targetX = 0;
-          targetY = 0;
-
-          if (!frame) {
-            frame = window.requestAnimationFrame(renderParallax);
-          }
-        });
-
-        setView(0);
-      };
-
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initSpatialSite, { once: true });
-      } else {
-        initSpatialSite();
-      }
-    })();
-  </script>
+  <script type="module" src={silentBloomScriptUrl}></script>
 </BaseLayout>

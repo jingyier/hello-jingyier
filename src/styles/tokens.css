@@ -1,40 +1,26 @@
 :root {
-  --color-void: #080b12;
-  --color-abyss: #0d1320;
-  --color-chamber: #141923;
-  --color-concrete: #77766f;
-  --color-concrete-deep: #323740;
-  --color-paper: #c7c0ad;
-  --color-paper-dim: #8f887a;
-  --color-ink: #e7dfcc;
-  --color-muted: #a59f93;
-  --color-soft: #716f68;
-  --color-line: rgba(231, 223, 204, 0.14);
-  --color-rust: #c8642b;
-  --color-rust-deep: #74351e;
-  --color-glow: #9ad7c0;
-  --color-shadow: rgba(0, 0, 0, 0.62);
+  --garden-ink: #272124;
+  --garden-paper: #ded1be;
+  --garden-paper-deep: #bda995;
+  --garden-sky: #c99aa2;
+  --garden-sage: #768d72;
+  --garden-mist: #8fa8ad;
+  --garden-violet: #7b6a96;
+  --garden-coral: #aa574c;
+  --garden-ochre: #e1b36c;
+  --garden-teal: #69aaa5;
+  --garden-night: #182b2e;
+  --garden-cream: #f1e5d0;
+  --garden-line: rgba(39, 33, 36, 0.2);
+  --garden-soft-line: rgba(241, 229, 208, 0.22);
+  --garden-shadow: rgba(32, 24, 28, 0.42);
 
   --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-serif: Georgia, "Times New Roman", serif;
-  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 
-  --ease-gravity: cubic-bezier(0.16, 1, 0.24, 1);
-  --ease-weight: cubic-bezier(0.2, 0.82, 0.18, 1);
-
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
-  --space-5: 1.25rem;
-  --space-6: 1.5rem;
-  --space-8: 2rem;
-  --space-10: 2.5rem;
-  --space-12: 3rem;
-  --space-14: 3.5rem;
-  --space-16: 4rem;
-  --space-20: 5rem;
-
-  --content-max: 78rem;
-  --measure: 42rem;
+  --ease-ritual: cubic-bezier(0.16, 1, 0.24, 1);
+  --ease-breath: cubic-bezier(0.45, 0, 0.2, 1);
+  --motion-slow: 1800ms;
+  --motion-mid: 720ms;
+  --motion-fast: 220ms;
 }

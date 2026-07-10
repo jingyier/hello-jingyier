@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Hard edge archive gate mask">
+  <path fill="#000" d="M0 0h1200v800H0z"/>
+  <path fill="#fff" d="M166 640 386 148h428l220 492H814L708 338H492L386 640z"/>
+  <path fill="#000" d="M544 424h112v216H544z"/>
+  <path fill="none" stroke="#fff" stroke-width="18" d="M164 640h872M386 148l158 276m270-276L656 424M492 338h216"/>
+</svg>

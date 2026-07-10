@@ -1,1 +1,27 @@
-[]
+{
+  "visualSystem": {
+    "direction": "NanoGL-inspired native WebGL stage: saturated neon cyan, acid yellow, hot red, violet shadows, hard-edge geometry, shader grain, scanlines, and camera-linked motion.",
+    "source": "Programmatic assets created in-repo by Codex; no external stock assets and no NanoGL source code copied.",
+    "updatedAt": "2026-07-09"
+  },
+  "assets": [
+    {
+      "path": "src/assets/visual/masks/archive-gate.svg",
+      "type": "svg-mask",
+      "source": "Codex-generated vector mask",
+      "usage": "Reference geometry for archive gate / hard-edge visual language."
+    },
+    {
+      "path": "src/assets/visual/sprites/neon-index.svg",
+      "type": "svg-sprite",
+      "source": "Codex-generated vector sprite",
+      "usage": "Reference sprite for neon index marks and future WebGL texture conversion."
+    },
+    {
+      "path": "src/scripts/gl/texture.ts",
+      "type": "runtime-texture",
+      "source": "Procedural WebGL texture generation",
+      "usage": "Creates color noise and displacement textures at runtime because no image-generation tool was available in this session."
+    }
+  ]
+}
