@@ -121,20 +121,51 @@ if (page) {
     if (messageFeedback) messageFeedback.textContent = text;
   };
 
+  const formatMessageTime = (value) => {
+    const date = value ? new Date(value) : new Date();
+    if (Number.isNaN(date.valueOf())) return "";
+    return new Intl.DateTimeFormat("zh-CN", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false
+    }).format(date);
+  };
+
   const createMessageNode = (value, className = "") => {
+    const body = typeof value === "string" ? value : value?.body;
+    const createdAt = typeof value === "string" ? "" : value?.createdAt;
+    const message = document.createElement("article");
+    const content = document.createElement("p");
+    const timestamp = document.createElement("time");
+    message.className = ["message-letter", className].filter(Boolean).join(" ");
+    content.textContent = body;
+    timestamp.textContent = formatMessageTime(createdAt);
+    if (createdAt) timestamp.dateTime = createdAt;
+    message.append(content, timestamp);
+    return message;
+  };
+
+  const createEmptyMessageNode = () => {
     const message = document.createElement("p");
-    message.textContent = value;
-    if (className) message.className = className;
+    message.className = "message-empty";
+    message.textContent = "暂无公开留言。";
     return message;
   };
 
   const renderApprovedMessages = (messages) => {
     if (!approvedMessageList) return;
     approvedMessageList.textContent = "";
+    if (messages.length === 0) {
+      approvedMessageList.append(createEmptyMessageNode());
+      return;
+    }
     messages.forEach((message) => {
       const body = typeof message === "string" ? message : message?.body;
       if (!body) return;
-      approvedMessageList.append(createMessageNode(body, "is-approved"));
+      approvedMessageList.append(createMessageNode(message, "is-approved"));
     });
   };
 
@@ -227,7 +258,7 @@ if (page) {
       if (honeypot) honeypot.value = "";
       setMessageFeedback("已收到，审核后会公开显示。");
     } catch {
-      state.messages.push(value);
+      state.messages.push({ body: value, createdAt: new Date().toISOString() });
       persistMessages();
       renderStoredMessages();
       input.value = "";
@@ -260,6 +291,7 @@ if (page) {
   showQuote(state.quoteIndex, false);
   showWeather(state.weatherIndex);
   showStatus(state.statusIndex);
+  renderApprovedMessages([]);
   renderStoredMessages();
   loadApprovedMessages();
   updateClock();

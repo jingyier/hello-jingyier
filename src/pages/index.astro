@@ -62,33 +62,19 @@ const primaryQuote = homeData.quotes[0];
         <article class="home-panel home-message-panel">
           <div class="panel-heading">
             <p>留言板</p>
-            <div class="panel-actions" aria-label="留言操作">
-              <button type="button" data-undo-message>撤回</button>
-              <button type="button" data-clear-messages>清空</button>
-            </div>
           </div>
-          <p class="panel-meta" data-message-feedback>留言会先审核，公开后显示在这里。</p>
-          <div class="message-stack">
-            <section class="message-group" aria-label="默认留言">
-              <div class="message-list" data-message-static-list>
-                {homeData.messages.map((message) => <p>{message}</p>)}
-              </div>
-            </section>
-            <section class="message-group" aria-label="已审核留言">
-              <div class="message-list" data-message-approved-list aria-live="polite"></div>
-            </section>
-            <section class="message-group" aria-label="本机留言">
-              <div class="message-list" data-message-local-list aria-live="polite"></div>
-            </section>
+          <div class="message-board-card">
+            <div class="message-list" data-message-approved-list aria-live="polite"></div>
+            <div class="message-list message-list-local" data-message-local-list aria-live="polite"></div>
+            <p class="message-feedback" data-message-feedback>留言会先审核。</p>
+            <form class="message-form" data-message-form>
+              <input class="message-honeypot" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
+              <label>
+                <input name="message" type="text" maxlength="120" autocomplete="off" placeholder="写下想留下的一句。" aria-label="写一句留言" />
+              </label>
+              <button type="submit">留下</button>
+            </form>
           </div>
-          <form class="message-form" data-message-form>
-            <input class="message-honeypot" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
-            <label>
-              <span>写一句话</span>
-              <input name="message" type="text" maxlength="120" autocomplete="off" placeholder="例如：路过，留个记号。" />
-            </label>
-            <button type="submit">留下</button>
-          </form>
         </article>
 
         <article class="home-panel home-recent-panel">

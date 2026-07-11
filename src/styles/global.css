@@ -263,39 +263,76 @@ a {
   transform: translateY(0.35rem);
 }
 
-.message-stack,
 .message-list,
 .home-list {
   display: grid;
   gap: 0.62rem;
 }
 
-.message-group {
+.message-board-card {
   display: grid;
-  gap: 0.42rem;
+  gap: 0.85rem;
+  min-height: 16rem;
+  padding: 1rem;
+  border: 1px solid rgba(39, 33, 36, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 249, 232, 0.22);
 }
 
-.message-list p {
+.message-list {
+  align-content: start;
+}
+
+.message-list-local {
+  padding-top: 0.15rem;
+}
+
+.message-letter {
+  display: grid;
+  gap: 0.55rem;
+  padding: 0.85rem 0.9rem;
+  border: 1px solid rgba(39, 33, 36, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 252, 244, 0.46);
+}
+
+.message-letter p {
   margin: 0;
   color: rgba(39, 33, 36, 0.74);
   line-height: 1.58;
 }
 
-.message-list p.is-approved {
+.message-letter time {
+  justify-self: end;
+  color: rgba(39, 33, 36, 0.42);
+  font-size: 0.72rem;
+  line-height: 1;
+}
+
+.message-letter.is-approved p {
   color: rgba(39, 33, 36, 0.82);
   font-weight: 720;
 }
 
-.message-list p.is-new {
+.message-letter.is-new p {
   color: #302628;
   font-weight: 760;
+}
+
+.message-empty,
+.message-feedback {
+  margin: 0;
+  color: rgba(39, 33, 36, 0.46);
+  font-size: 0.82rem;
+  line-height: 1.6;
 }
 
 .message-form {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0.6rem;
+  gap: 0.75rem;
   align-items: end;
+  margin-top: auto;
 }
 
 .message-form label {
@@ -312,17 +349,18 @@ a {
 .message-form input {
   width: 100%;
   min-height: 2.55rem;
-  border: 1px solid rgba(39, 33, 36, 0.16);
-  border-radius: 999px;
-  background: rgba(255, 249, 232, 0.32);
+  border: 0;
+  border-bottom: 1px solid rgba(39, 33, 36, 0.26);
+  border-radius: 0;
+  background: transparent;
   color: #302628;
-  padding: 0 0.86rem;
+  padding: 0.2rem 0;
   font: inherit;
 }
 
 .message-form input:focus-visible {
-  outline: 2px solid rgba(105, 170, 165, 0.9);
-  outline-offset: 3px;
+  border-bottom-color: rgba(39, 33, 36, 0.68);
+  outline: 0;
 }
 
 .message-form .message-honeypot {
