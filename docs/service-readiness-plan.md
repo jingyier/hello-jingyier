@@ -18,7 +18,15 @@
 审核 SQL：
 
 ```sql
-UPDATE messages SET status='approved' WHERE id=?;
+SELECT id, body, status, created_at
+FROM messages
+WHERE status='pending'
+ORDER BY created_at DESC
+LIMIT 20;
+
+UPDATE messages
+SET status='approved'
+WHERE id='实际留言ID';
 ```
 
 ### 备选：第三方表单服务

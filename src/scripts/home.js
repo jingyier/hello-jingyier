@@ -212,7 +212,7 @@ if (page) {
     writeStoredJson("quoteIndex", state.quoteIndex);
   });
 
-  messageForm?.addEventListener("submit", (event) => {
+  messageForm?.addEventListener("submit", async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
     const input = form.elements.namedItem("message");

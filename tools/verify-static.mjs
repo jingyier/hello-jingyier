@@ -91,11 +91,12 @@ assert(
 );
 
 assert(
-  "docs describe Cloudflare D1 message setup",
+    "docs describe Cloudflare D1 message setup",
   designPlan.includes("Cloudflare Pages Functions + D1") &&
     designPlan.includes("jingyier_messages") &&
     cloudflareNotes.includes("Binding name: `DB`") &&
-    cloudflareNotes.includes("UPDATE messages SET status='approved'")
+    cloudflareNotes.includes("SELECT id, body, status, created_at") &&
+    cloudflareNotes.includes("WHERE id='实际留言ID'")
 );
 
 const sourceFiles = [

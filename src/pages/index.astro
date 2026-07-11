@@ -61,26 +61,23 @@ const primaryQuote = homeData.quotes[0];
 
         <article class="home-panel home-message-panel">
           <div class="panel-heading">
-            <p>留言</p>
+            <p>留言板</p>
             <div class="panel-actions" aria-label="留言操作">
               <button type="button" data-undo-message>撤回</button>
               <button type="button" data-clear-messages>清空</button>
             </div>
           </div>
-          <p class="panel-meta" data-message-feedback>公开留言会先审核；本机留言只保存在你的浏览器里。</p>
+          <p class="panel-meta" data-message-feedback>留言会先审核，公开后显示在这里。</p>
           <div class="message-stack">
-            <section class="message-group" aria-label="静态样例">
-              <p class="panel-meta">静态样例</p>
+            <section class="message-group" aria-label="默认留言">
               <div class="message-list" data-message-static-list>
                 {homeData.messages.map((message) => <p>{message}</p>)}
               </div>
             </section>
             <section class="message-group" aria-label="已审核留言">
-              <p class="panel-meta">已审核留言</p>
               <div class="message-list" data-message-approved-list aria-live="polite"></div>
             </section>
             <section class="message-group" aria-label="本机留言">
-              <p class="panel-meta">本机留言</p>
               <div class="message-list" data-message-local-list aria-live="polite"></div>
             </section>
           </div>

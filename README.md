@@ -53,7 +53,15 @@ The homepage message form now tries `/api/messages` first:
 - Manual approval can be done in the Cloudflare D1 console:
 
 ```sql
-UPDATE messages SET status='approved' WHERE id=?;
+SELECT id, body, status, created_at
+FROM messages
+WHERE status='pending'
+ORDER BY created_at DESC
+LIMIT 20;
+
+UPDATE messages
+SET status='approved'
+WHERE id='paste-the-message-id-here';
 ```
 
 If the API or D1 binding is unavailable, the page falls back to the browser-local `localStorage` message flow.

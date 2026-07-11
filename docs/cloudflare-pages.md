@@ -36,7 +36,15 @@ npm run verify:static
 访客提交会写入 `status='pending'`。第一版采用 D1 控制台手动审核：
 
 ```sql
-UPDATE messages SET status='approved' WHERE id=?;
+SELECT id, body, status, created_at
+FROM messages
+WHERE status='pending'
+ORDER BY created_at DESC
+LIMIT 20;
+
+UPDATE messages
+SET status='approved'
+WHERE id='实际留言ID';
 ```
 
 首页只读取 `approved` 留言。D1 binding 未配置或 API 不可用时，首页会继续展示静态留言，并回退到浏览器本地留言。

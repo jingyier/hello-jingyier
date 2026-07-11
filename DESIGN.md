@@ -266,7 +266,7 @@ git push -u origin main
 - Pages D1 binding name: `DB`
 - Schema: 执行 `db/schema.sql`
 - API path: `GET /api/messages`、`POST /api/messages`
-- 审核方式：第一版在 Cloudflare D1 控制台手动执行 `UPDATE messages SET status='approved' WHERE id=?;`
+- 审核方式：第一版在 Cloudflare D1 控制台先查出待审留言 id，再手动执行 `UPDATE messages SET status='approved' WHERE id='实际留言ID';`
 
 前端行为：
 
