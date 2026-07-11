@@ -19,9 +19,13 @@ const garden = read("garden/index.html");
 const notes = read("notes/index.html");
 const work = read("work/index.html");
 const homeScript = readFileSync(join(root, "src/scripts/home.js"), "utf8");
+const homePage = readFileSync(join(root, "src/pages/index.astro"), "utf8");
+const messageFunction = readFileSync(join(root, "functions/api/messages.ts"), "utf8");
+const d1Schema = readFileSync(join(root, "db/schema.sql"), "utf8");
 const homeData = JSON.parse(readFileSync(join(root, "src/content/home.json"), "utf8"));
 const servicePlan = readFileSync(join(root, "docs/service-readiness-plan.md"), "utf8");
 const cloudflareNotes = readFileSync(join(root, "docs/cloudflare-pages.md"), "utf8");
+const designPlan = readFileSync(join(root, "DESIGN.md"), "utf8");
 const packageJson = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
 
 assert("core pages are generated", Boolean(index && about && garden && notes && work));
@@ -34,7 +38,9 @@ assert("home script updates HH:mm:ss clocks", homeScript.includes("second: \"2-d
 assert("home script cycles quotes and weather/status pools", homeScript.includes("state.quoteIndex = (state.quoteIndex + 1) % quotes.length") && homeScript.includes("state.weatherIndex = (state.weatherIndex + 1) % weatherNotes.length"));
 assert("home script supports local-only message controls", homeScript.includes("data-undo-message") && homeScript.includes("data-clear-messages") && homeScript.includes("state.messages.pop()"));
 assert("home script persists browser-only state and falls back safely", homeScript.includes("window.localStorage") && homeScript.includes("storageEnabled") && homeScript.includes("刷新页面后不会保留"));
-assert("home copy does not promise public visitor collection", index.includes("留言只保存在你的浏览器里") && !index.includes("公开留言"));
+assert("home page has reviewed message containers and honeypot", homePage.includes("data-message-approved-list") && homePage.includes("data-message-local-list") && homePage.includes("message-honeypot"));
+assert("home script submits to same-origin message API first", homeScript.includes("fetch(\"/api/messages\"") && homeScript.includes("审核后会公开显示"));
+assert("home script falls back to local messages when API fails", homeScript.includes("接口暂时不可用") && homeScript.includes("state.messages.push(value)"));
 assert("garden route keeps app marker", garden.includes("data-garden-app"));
 assert("garden route keeps chapter controls", garden.includes("data-step") && garden.includes("data-reset") && garden.includes("data-finish"));
 assert("garden route keeps image fallback metadata", garden.includes("data-fallback-src"));
@@ -56,12 +62,40 @@ assert(
     cloudflareNotes.includes("/images/silent-bloom/backgrounds/opening-silence.webp")
 );
 assert(
-  "service readiness plan covers messages, weather, and archive",
-  servicePlan.includes("第三方表单服务") &&
-    servicePlan.includes("Vercel / Cloudflare serverless endpoint") &&
+  "service readiness plan selects D1 for messages and covers weather/archive",
+  servicePlan.includes("Cloudflare D1 + Pages Functions") &&
+    servicePlan.includes("jingyier_messages") &&
     servicePlan.includes("GitHub Issues / Discussions") &&
     servicePlan.includes("默认城市") &&
     servicePlan.includes("静态标签筛选")
+);
+
+assert(
+  "D1 schema creates reviewed messages table",
+  d1Schema.includes("CREATE TABLE IF NOT EXISTS messages") &&
+    d1Schema.includes("status IN ('pending', 'approved', 'rejected')") &&
+    d1Schema.includes("messages_status_created_at_idx") &&
+    d1Schema.includes("user_agent_hash") &&
+    d1Schema.includes("ip_hash")
+);
+
+assert(
+  "Pages Function exposes approved GET and pending POST",
+  messageFunction.includes("onRequestGet") &&
+    messageFunction.includes("onRequestPost") &&
+    messageFunction.includes("WHERE status = ?") &&
+    messageFunction.includes(".bind(\"approved\", 20)") &&
+    messageFunction.includes("'pending'") &&
+    messageFunction.includes("crypto.randomUUID") &&
+    messageFunction.includes("env.DB")
+);
+
+assert(
+  "docs describe Cloudflare D1 message setup",
+  designPlan.includes("Cloudflare Pages Functions + D1") &&
+    designPlan.includes("jingyier_messages") &&
+    cloudflareNotes.includes("Binding name: `DB`") &&
+    cloudflareNotes.includes("UPDATE messages SET status='approved'")
 );
 
 const sourceFiles = [
@@ -71,9 +105,15 @@ const sourceFiles = [
   "src/pages/notes.astro",
   "src/pages/work.astro"
 ];
-const externalRequestPattern = /\b(fetch|XMLHttpRequest)\b|navigator\.geolocation|openweathermap|api\.weather/i;
-const offenders = sourceFiles.filter((file) => externalRequestPattern.test(readFileSync(join(root, file), "utf8")));
-assert("static homepage/content pages make no external API requests", offenders.length === 0, offenders.join(", "));
+const sourceSnapshots = sourceFiles.map((file) => [file, readFileSync(join(root, file), "utf8")]);
+const externalOffenders = sourceSnapshots
+  .filter(([, contents]) => /https?:\/\/|XMLHttpRequest|navigator\.geolocation|openweathermap|api\.weather/i.test(contents))
+  .map(([file]) => file);
+const disallowedFetchOffenders = sourceSnapshots
+  .filter(([, contents]) => /\bfetch\s*\(/.test(contents) && !contents.includes("fetch(\"/api/messages\""))
+  .map(([file]) => file);
+assert("homepage/content pages make no external API requests", externalOffenders.length === 0, externalOffenders.join(", "));
+assert("homepage fetches only same-origin messages API", disallowedFetchOffenders.length === 0, disallowedFetchOffenders.join(", "));
 
 const failures = checks.filter((check) => !check.passed);
 

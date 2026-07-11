@@ -38,7 +38,20 @@ const checkAsset = async (path, expectedType) => {
   }
 };
 
+const checkMessagesApi = async () => {
+  try {
+    const { url, response, text } = await request("/api/messages");
+    const type = response.headers.get("content-type") ?? "";
+    const data = JSON.parse(text);
+    assert("/api/messages returns JSON", type.includes("json"), type || url);
+    assert("/api/messages returns ok payload", response.ok && data.ok === true && Array.isArray(data.messages), `${response.status} ${url}`);
+  } catch (error) {
+    assert("/api/messages can be fetched", false, error instanceof Error ? error.message : String(error));
+  }
+};
+
 await checkPage("/", ["data-home-page", "id=\"home-data\"", "jingyier"]);
+await checkMessagesApi();
 await checkPage("/garden/", ["data-garden-app", "data-step", "data-reset", "data-finish", "data-fallback-src"]);
 await checkPage("/notes/", ["data-filter-scope", "data-filter-value=\"quote\""]);
 await checkPage("/work/", ["data-filter-scope", "data-filter-value=\"Interactive room\""]);

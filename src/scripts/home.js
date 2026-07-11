@@ -44,7 +44,8 @@ if (page) {
   const quoteSource = page.querySelector("[data-quote-source]");
   const nextQuote = page.querySelector("[data-next-quote]");
   const messageForm = page.querySelector("[data-message-form]");
-  const messageList = page.querySelector("[data-message-list]");
+  const approvedMessageList = page.querySelector("[data-message-approved-list]");
+  const localMessageList = page.querySelector("[data-message-local-list]");
   const messageFeedback = page.querySelector("[data-message-feedback]");
   const undoMessage = page.querySelector("[data-undo-message]");
   const clearMessages = page.querySelector("[data-clear-messages]");
@@ -120,20 +121,66 @@ if (page) {
     if (messageFeedback) messageFeedback.textContent = text;
   };
 
+  const createMessageNode = (value, className = "") => {
+    const message = document.createElement("p");
+    message.textContent = value;
+    if (className) message.className = className;
+    return message;
+  };
+
+  const renderApprovedMessages = (messages) => {
+    if (!approvedMessageList) return;
+    approvedMessageList.textContent = "";
+    messages.forEach((message) => {
+      const body = typeof message === "string" ? message : message?.body;
+      if (!body) return;
+      approvedMessageList.append(createMessageNode(body, "is-approved"));
+    });
+  };
+
   const renderStoredMessages = () => {
-    if (!messageList) return;
-    messageList.querySelectorAll("[data-user-message]").forEach((node) => node.remove());
+    if (!localMessageList) return;
+    localMessageList.textContent = "";
     state.messages.forEach((value) => {
-      const message = document.createElement("p");
-      message.textContent = value;
-      message.className = "is-new";
+      const message = createMessageNode(value, "is-new");
       message.dataset.userMessage = "true";
-      messageList.append(message);
+      localMessageList.append(message);
     });
   };
 
   const persistMessages = () => {
     writeStoredJson("messages", state.messages);
+  };
+
+  const submitRemoteMessage = async (body, website = "") => {
+    const response = await fetch("/api/messages", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "accept": "application/json"
+      },
+      body: JSON.stringify({ body, website })
+    });
+
+    const result = await response.json().catch(() => ({ ok: false }));
+    if (!response.ok || !result.ok) {
+      throw new Error(result.error ?? "message_submit_failed");
+    }
+  };
+
+  const loadApprovedMessages = async () => {
+    if (!approvedMessageList) return;
+    try {
+      const response = await fetch("/api/messages", {
+        headers: { "accept": "application/json" }
+      });
+      const result = await response.json();
+      if (response.ok && result.ok && Array.isArray(result.messages)) {
+        renderApprovedMessages(result.messages);
+      }
+    } catch {
+      // Approved messages are an enhancement; static and local messages stay visible without the API.
+    }
   };
 
   state.quoteIndex = normalizeIndex(readStoredJson("quoteIndex", 0), quotes.length);
@@ -169,14 +216,23 @@ if (page) {
     event.preventDefault();
     const form = event.currentTarget;
     const input = form.elements.namedItem("message");
-    const value = input?.value?.trim();
-    if (!value || !messageList) return;
+    const website = form.elements.namedItem("website")?.value?.trim() ?? "";
+    const value = input?.value?.trim().replace(/\s+/g, " ");
+    if (!value) return;
 
-    state.messages.push(value);
-    persistMessages();
-    renderStoredMessages();
-    input.value = "";
-    setMessageFeedback(storageEnabled ? "已保存在你的浏览器里。" : "已临时留下。刷新页面后不会保留。");
+    try {
+      await submitRemoteMessage(value, website);
+      input.value = "";
+      const honeypot = form.elements.namedItem("website");
+      if (honeypot) honeypot.value = "";
+      setMessageFeedback("已收到，审核后会公开显示。");
+    } catch {
+      state.messages.push(value);
+      persistMessages();
+      renderStoredMessages();
+      input.value = "";
+      setMessageFeedback(storageEnabled ? "接口暂时不可用，已保存在你的浏览器里。" : "接口暂时不可用，已临时留下。刷新页面后不会保留。");
+    }
   });
 
   undoMessage?.addEventListener("click", () => {
@@ -205,6 +261,7 @@ if (page) {
   showWeather(state.weatherIndex);
   showStatus(state.statusIndex);
   renderStoredMessages();
+  loadApprovedMessages();
   updateClock();
   window.setInterval(updateClock, 1000);
 }

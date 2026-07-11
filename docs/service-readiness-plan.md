@@ -2,30 +2,34 @@
 
 更新时间：2026-07-11
 
-这份计划只为后续真实服务接入预留决策，不在当前阶段接入数据库、真实天气、公开留言后端或第三方搜索。
+这份计划记录真实服务接入边界。当前已选择 Cloudflare D1 + Pages Functions 作为留言功能首选方案；天气和全文搜索仍不接真实外部服务。
 
-## 留言后端预案
+## 留言后端方案
 
-### 方案 A：第三方表单服务
+### 已选：Cloudflare D1 + Pages Functions
 
-- 用途：只接收留言，不做公开评论区。
-- 优点：上线快，审核和邮件通知现成。
+- 用途：访客提交留言，写入 D1 的 `messages` 表。
+- API：`POST /api/messages` 提交留言，`GET /api/messages` 读取最近 20 条已审核留言。
+- 存储：D1 database `jingyier_messages`，Pages binding name `DB`。
+- 审核：第一版不做后台，在 Cloudflare D1 控制台手动把 `pending` 改为 `approved`。
+- 前端要求：提交成功后提示“审核后公开”；API 失败时继续回退到浏览器本地保存。
+- 风控：服务端限制长度、去空白、拒绝空内容，隐藏 honeypot 字段拦截简单机器人；后续再加 Turnstile 或管理接口。
+
+审核 SQL：
+
+```sql
+UPDATE messages SET status='approved' WHERE id=?;
+```
+
+### 备选：第三方表单服务
+
+- 用途：如果不想维护 D1 审核流，可只接收留言，不做公开评论区。
 - 风险：免费额度、品牌露出、数据导出能力要提前确认。
-- 前端要求：保留当前本地留言体验；提交失败时仍回退到浏览器本地保存。
 
-### 方案 B：Vercel / Cloudflare serverless endpoint
-
-- 用途：在 Cloudflare Pages 同一项目里增加 Pages Functions，或把轻量 JSON endpoint 放到 Vercel。
-- 优点：Cloudflare 路径统一；Vercel 适合保留当前 `api/site.ts` 风格的轻量函数。
-- 风险：需要选择存储层，例如 KV、D1、Vercel KV 或外部表单；需要简单限流和垃圾内容处理。
-- 前端要求：默认不读取定位、不暴露密钥；公开展示前必须有审核字段。
-
-### 方案 C：GitHub Issues / Discussions
+### 备选：GitHub Issues / Discussions
 
 - 用途：把留言作为站点维护记录或公开讨论源。
-- 优点：适合低频个人站，审核和历史记录透明。
 - 风险：GitHub API 额度、权限和展示延迟需要处理；不适合匿名高频留言。
-- 前端要求：只读展示可以静态生成；写入必须走服务端代理。
 
 ## 天气接入预案
 
@@ -43,7 +47,7 @@
 
 ## 接入门槛
 
-- 明确留言是否公开展示、是否需要审核、是否需要删除能力。
+- 留言已明确为审核后公开；删除和批量审核能力后续按需要补。
 - 明确天气默认城市和展示语言。
 - 明确搜索范围：只搜 Notes，还是 Notes + Work + About。
 - 每个服务都有静态 fallback，不让首页依赖外部 API 才能渲染。

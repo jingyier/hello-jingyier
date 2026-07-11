@@ -20,7 +20,9 @@ npm run preview
 - `src/content/floating-info.json`: legacy glass-note content retained for possible reuse.
 - `src/components`: small layout/list components.
 - `src/styles`: design tokens, personal homepage styles, garden prototype styles, content pages, and glass layer.
-- `api/site.ts`: Vercel JSON API example.
+- `functions/api/messages.ts`: Cloudflare Pages Function for visitor messages.
+- `db/schema.sql`: Cloudflare D1 schema for reviewed messages.
+- `api/site.ts`: historical Vercel JSON API example; not used for messages.
 
 ## Assets
 
@@ -38,19 +40,32 @@ When adding or replacing assets:
 - Cloudflare Pages: build command `npm run build`, output directory `dist`.
 - Local static verification: `npm run verify:static`.
 - Deployment verification after Cloudflare publishes: `npm run verify:deploy` or `npm run verify:deploy -- https://your-preview.pages.dev`.
-- Vercel API: deploy the `api/` directory if runtime JSON endpoints are needed.
+- Messages API: deploy on Cloudflare Pages Functions and bind D1 as `DB`.
+- D1 database: create `jingyier_messages`, then apply `db/schema.sql`.
 - Keep `.npm-cache` local only; it is ignored by git.
+
+## Messages
+
+The homepage message form now tries `/api/messages` first:
+
+- `POST /api/messages` writes valid messages to D1 as `status='pending'`.
+- `GET /api/messages` returns the latest approved messages only.
+- Manual approval can be done in the Cloudflare D1 console:
+
+```sql
+UPDATE messages SET status='approved' WHERE id=?;
+```
+
+If the API or D1 binding is unavailable, the page falls back to the browser-local `localStorage` message flow.
 
 ## Future Service Notes
 
-The current homepage widgets are static or browser-local by design:
-
-- Messages are saved only in the visitor's browser with `localStorage`.
+The remaining homepage widgets are static or browser-local by design:
 - Weather uses local static copy and does not request location or external APIs.
 - Quotes, status text, and widget copy come from `src/content/home.json`.
 
 Possible future upgrades:
 
-1. Visitor messages: third-party form service, serverless endpoint, or GitHub Issues/Discussions as the backing store.
+1. Visitor messages: add Turnstile, rate limiting, or a small moderation UI if manual D1 console approval becomes tedious.
 2. Weather: use a configured default city first, never browser location by default, and always fall back to static copy.
 3. Archive/search: add static tag filters for Notes and Work before introducing a hosted search service.

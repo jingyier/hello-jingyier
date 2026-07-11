@@ -67,17 +67,31 @@ const primaryQuote = homeData.quotes[0];
               <button type="button" data-clear-messages>清空</button>
             </div>
           </div>
-          <div class="message-list" data-message-list>
-            {homeData.messages.map((message) => <p>{message}</p>)}
+          <p class="panel-meta" data-message-feedback>公开留言会先审核；本机留言只保存在你的浏览器里。</p>
+          <div class="message-stack">
+            <section class="message-group" aria-label="静态样例">
+              <p class="panel-meta">静态样例</p>
+              <div class="message-list" data-message-static-list>
+                {homeData.messages.map((message) => <p>{message}</p>)}
+              </div>
+            </section>
+            <section class="message-group" aria-label="已审核留言">
+              <p class="panel-meta">已审核留言</p>
+              <div class="message-list" data-message-approved-list aria-live="polite"></div>
+            </section>
+            <section class="message-group" aria-label="本机留言">
+              <p class="panel-meta">本机留言</p>
+              <div class="message-list" data-message-local-list aria-live="polite"></div>
+            </section>
           </div>
           <form class="message-form" data-message-form>
+            <input class="message-honeypot" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
             <label>
               <span>写一句话</span>
-              <input name="message" type="text" maxlength="48" autocomplete="off" placeholder="例如：路过，留个记号。" />
+              <input name="message" type="text" maxlength="120" autocomplete="off" placeholder="例如：路过，留个记号。" />
             </label>
             <button type="submit">留下</button>
           </form>
-          <p class="panel-meta" data-message-feedback>留言只保存在你的浏览器里。</p>
         </article>
 
         <article class="home-panel home-recent-panel">

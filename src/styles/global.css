@@ -263,16 +263,27 @@ a {
   transform: translateY(0.35rem);
 }
 
+.message-stack,
 .message-list,
 .home-list {
   display: grid;
   gap: 0.62rem;
 }
 
+.message-group {
+  display: grid;
+  gap: 0.42rem;
+}
+
 .message-list p {
   margin: 0;
   color: rgba(39, 33, 36, 0.74);
   line-height: 1.58;
+}
+
+.message-list p.is-approved {
+  color: rgba(39, 33, 36, 0.82);
+  font-weight: 720;
 }
 
 .message-list p.is-new {
@@ -312,6 +323,16 @@ a {
 .message-form input:focus-visible {
   outline: 2px solid rgba(105, 170, 165, 0.9);
   outline-offset: 3px;
+}
+
+.message-form .message-honeypot {
+  position: absolute;
+  left: -100vw;
+  width: 1px;
+  height: 1px;
+  min-height: 0;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .home-list a {
