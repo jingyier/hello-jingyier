@@ -26,7 +26,7 @@ const { items } = Astro.props;
       const itemId = item.slug ?? item.id;
       const href = itemId === "silent-bloom.md" || itemId === "silent-bloom" ? "/garden" : `/work#${itemId}`;
       return (
-      <article class="work-item" id={itemId}>
+      <article class="work-item" id={itemId} data-filter-item data-filter-values={item.data.type}>
         <div class="work-cover" role="img" aria-label={item.data.coverAlt}>
           <svg viewBox="0 0 320 220" aria-hidden="true" focusable="false">
             <defs>

@@ -26,7 +26,7 @@ const formatter = new Intl.DateTimeFormat("zh-CN", {
 <div class="note-list">
   {
     items.map((item) => (
-      <article class="note-item" id={item.slug ?? item.id}>
+      <article class="note-item" id={item.slug ?? item.id} data-filter-item data-filter-values={item.data.tags.join(",")}>
         <p class="meta-line">
           <time datetime={item.data.date.toISOString()}>{formatter.format(item.data.date)}</time>
           {item.data.featured && <span>Featured</span>}

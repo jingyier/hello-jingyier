@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "verify:static": "node tools/verify-static.mjs",
+    "verify:deploy": "node tools/verify-deploy.mjs"
   },
   "dependencies": {
     "astro": "latest"

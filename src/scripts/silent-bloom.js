@@ -18,10 +18,22 @@ if (app) {
   const stepButtons = [...app.querySelectorAll("[data-step]")];
 
   const flowerAssets = [
-    "/images/silent-bloom/flowers/flower-closed.webp",
-    "/images/silent-bloom/flowers/flower-half-open.webp",
-    "/images/silent-bloom/flowers/flower-open.webp",
-    "/images/silent-bloom/flowers/seed-sprout.webp"
+    {
+      src: "/images/silent-bloom/flowers/flower-closed.webp",
+      fallback: "/images/silent-bloom/flowers/flower-closed.png"
+    },
+    {
+      src: "/images/silent-bloom/flowers/flower-half-open.webp",
+      fallback: "/images/silent-bloom/flowers/flower-half-open.png"
+    },
+    {
+      src: "/images/silent-bloom/flowers/flower-open.webp",
+      fallback: "/images/silent-bloom/flowers/flower-open.png"
+    },
+    {
+      src: "/images/silent-bloom/flowers/seed-sprout.webp",
+      fallback: "/images/silent-bloom/flowers/seed-sprout.png"
+    }
   ];
 
   const phases = {
@@ -51,6 +63,17 @@ if (app) {
     guideDriftTimer: null,
     guidePoint: null
   };
+
+  const useFallbackImage = (image) => {
+    const fallback = image.dataset.fallbackSrc;
+    if (!fallback || image.dataset.fallbackActive === "true") return;
+    image.dataset.fallbackActive = "true";
+    image.src = fallback;
+  };
+
+  app.querySelectorAll("img[data-fallback-src]").forEach((image) => {
+    image.addEventListener("error", () => useFallbackImage(image), { once: true });
+  });
 
   const isPlantableChapter = () => plantableChapters.has(state.chapter);
 
@@ -164,8 +187,11 @@ if (app) {
     const flower = document.createElement("img");
     const sparse = speed > 1.05;
     const assetIndex = sparse && Math.random() > 0.38 ? 3 : Math.floor(Math.random() * 3);
+    const asset = flowerAssets[assetIndex];
     const size = sparse ? 17 + Math.random() * 11 : 24 + Math.random() * 22;
-    flower.src = flowerAssets[assetIndex];
+    flower.src = asset.src;
+    flower.dataset.fallbackSrc = asset.fallback;
+    flower.addEventListener("error", () => useFallbackImage(flower), { once: true });
     flower.alt = "";
     flower.className = sparse ? "garden-sprite is-seed" : "garden-sprite is-flower";
     flower.style.setProperty("--x", `${point.x}px`);

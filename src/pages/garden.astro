@@ -7,37 +7,43 @@ const backgrounds = [
     id: "opening",
     title: "Opening Silence",
     label: "触摸前",
-    src: "/images/silent-bloom/backgrounds/opening-silence.webp"
+    src: "/images/silent-bloom/backgrounds/opening-silence.webp",
+    fallback: "/images/silent-bloom/backgrounds/opening-silence.png"
   },
   {
     id: "touch",
     title: "First Touch",
     label: "播种",
-    src: "/images/silent-bloom/backgrounds/first-touch.webp"
+    src: "/images/silent-bloom/backgrounds/first-touch.webp",
+    fallback: "/images/silent-bloom/backgrounds/first-touch.png"
   },
   {
     id: "breath",
     title: "Breathing Path",
     label: "呼吸",
-    src: "/images/silent-bloom/backgrounds/breathing-path.webp"
+    src: "/images/silent-bloom/backgrounds/breathing-path.webp",
+    fallback: "/images/silent-bloom/backgrounds/breathing-path.png"
   },
   {
     id: "crystal",
     title: "Crystal Resonance",
     label: "共鸣",
-    src: "/images/silent-bloom/backgrounds/crystal-resonance.webp"
+    src: "/images/silent-bloom/backgrounds/crystal-resonance.webp",
+    fallback: "/images/silent-bloom/backgrounds/crystal-resonance.png"
   },
   {
     id: "rain",
     title: "Seed Rain",
     label: "雨落",
-    src: "/images/silent-bloom/backgrounds/seed-rain.webp"
+    src: "/images/silent-bloom/backgrounds/seed-rain.webp",
+    fallback: "/images/silent-bloom/backgrounds/seed-rain.png"
   },
   {
     id: "night",
     title: "Night Garden",
     label: "保存",
-    src: "/images/silent-bloom/backgrounds/night-result.webp"
+    src: "/images/silent-bloom/backgrounds/night-result.webp",
+    fallback: "/images/silent-bloom/backgrounds/night-result.png"
   }
 ];
 ---
@@ -81,6 +87,7 @@ const backgrounds = [
                   class="scene-image"
                   data-scene={background.id}
                   src={background.src}
+                  data-fallback-src={background.fallback}
                   alt=""
                   loading={background.id === "opening" ? "eager" : "lazy"}
                 />
@@ -93,24 +100,28 @@ const backgrounds = [
             <img
               class="ground-prop ground-prop-opening"
               src="/images/silent-bloom/props/glow-moss-blooms.webp"
+              data-fallback-src="/images/silent-bloom/props/glow-moss-blooms.png"
               alt=""
               loading="eager"
             />
             <img
               class="ground-prop ground-prop-touch"
               src="/images/silent-bloom/props/glow-moss-blooms.webp"
+              data-fallback-src="/images/silent-bloom/props/glow-moss-blooms.png"
               alt=""
               loading="lazy"
             />
             <img
               class="ground-prop ground-prop-breath"
               src="/images/silent-bloom/props/glow-moss-blooms.webp"
+              data-fallback-src="/images/silent-bloom/props/glow-moss-blooms.png"
               alt=""
               loading="lazy"
             />
             <img
               class="ground-prop ground-prop-crystal"
               src="/images/silent-bloom/props/glow-moss-blooms.webp"
+              data-fallback-src="/images/silent-bloom/props/glow-moss-blooms.png"
               alt=""
               loading="lazy"
             />
@@ -122,8 +133,8 @@ const backgrounds = [
           <div class="sprite-layer" data-sprites aria-hidden="true"></div>
 
           <button class="guide-target" type="button" data-guide aria-label="推进静默花园场景">
-            <img class="guide-image guide-image-rest" src="/images/silent-bloom/props/guide-rest.webp" alt="" loading="eager" />
-            <img class="guide-image guide-image-active" src="/images/silent-bloom/props/guide-active.webp" alt="" loading="lazy" />
+            <img class="guide-image guide-image-rest" src="/images/silent-bloom/props/guide-rest.webp" data-fallback-src="/images/silent-bloom/props/guide-rest.png" alt="" loading="eager" />
+            <img class="guide-image guide-image-active" src="/images/silent-bloom/props/guide-active.webp" data-fallback-src="/images/silent-bloom/props/guide-active.png" alt="" loading="lazy" />
           </button>
 
           <div class="chapter-panel" aria-live="polite">

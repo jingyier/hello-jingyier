@@ -1419,6 +1419,53 @@ a {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.filter-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.filter-strip button {
+  border: 1px solid rgba(39, 33, 36, 0.16);
+  border-radius: 999px;
+  background: rgba(241, 229, 208, 0.22);
+  color: rgba(39, 33, 36, 0.7);
+  padding: 0.48rem 0.72rem;
+  font-size: 0.78rem;
+  font-weight: 820;
+  cursor: pointer;
+  transition:
+    background var(--motion-fast) ease,
+    border-color var(--motion-fast) ease,
+    color var(--motion-fast) ease,
+    transform var(--motion-fast) ease;
+}
+
+.filter-strip button:hover,
+.filter-strip button:focus-visible,
+.filter-strip button[aria-pressed="true"] {
+  border-color: rgba(39, 33, 36, 0.32);
+  background: rgba(241, 229, 208, 0.48);
+  color: #302628;
+  transform: translateY(-1px);
+}
+
+.filter-strip button:focus-visible {
+  outline: 2px solid rgba(105, 170, 165, 0.9);
+  outline-offset: 3px;
+}
+
+.filter-status {
+  margin: -0.6rem 0 0;
+  color: rgba(39, 33, 36, 0.56);
+  font-size: 0.78rem;
+  font-weight: 780;
+}
+
+[data-filter-item][hidden] {
+  display: none;
+}
+
 .work-item,
 .note-item {
   position: relative;

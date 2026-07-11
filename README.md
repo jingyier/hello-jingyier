@@ -36,6 +36,8 @@ When adding or replacing assets:
 ## Deployment
 
 - Cloudflare Pages: build command `npm run build`, output directory `dist`.
+- Local static verification: `npm run verify:static`.
+- Deployment verification after Cloudflare publishes: `npm run verify:deploy` or `npm run verify:deploy -- https://your-preview.pages.dev`.
 - Vercel API: deploy the `api/` directory if runtime JSON endpoints are needed.
 - Keep `.npm-cache` local only; it is ignored by git.
 
