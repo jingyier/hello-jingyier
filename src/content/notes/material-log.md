@@ -1,11 +1,11 @@
 ---
-title: 喜欢的图要有归宿
+title: 先把入口说清楚
 date: 2026-07-07
-summary: 用户提供的 6 张图已经进入公开资源目录，后续若用于正式上线，需要确认来源和授权。
+summary: 个人网站的首页不该只展示一个项目，它要先告诉访客这里是谁、有什么可以看。
 tags:
-  - assets
-  - workflow
+  - structure
+  - homepage
 featured: false
 ---
 
-The asset log is part of the product system, not an afterthought.
+The home page should feel like an index before it becomes a showcase.

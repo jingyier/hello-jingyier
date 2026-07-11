@@ -1,0 +1,38 @@
+---
+interface Props {
+  kind?: string;
+  title: string;
+  body: string;
+  meta?: string;
+  tone?: "mist" | "warm" | "sage";
+  position?: string;
+}
+
+const {
+  kind = "note",
+  title,
+  body,
+  meta,
+  tone = "mist",
+  position = "right-top"
+} = Astro.props;
+
+const isLocalTime = kind === "local-time";
+---
+
+<article
+  class:list={["glass-note", `glass-note-${tone}`, `glass-note-${position}`, isLocalTime && "glass-note-time"]}
+  data-glass-note
+  data-kind={kind}
+>
+  <p class="glass-note-kicker">{title}</p>
+  {
+    isLocalTime ? (
+      <p class="glass-note-time-value" data-local-time>静候</p>
+    ) : (
+      <p class="glass-note-body">{body}</p>
+    )
+  }
+  {isLocalTime && <p class="glass-note-body">{body}</p>}
+  {meta && <p class="glass-note-meta">{meta}</p>}
+</article>

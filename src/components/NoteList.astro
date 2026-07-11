@@ -1,6 +1,7 @@
 ---
 interface NoteItem {
-  slug: string;
+  id: string;
+  slug?: string;
   data: {
     title: string;
     date: Date;
@@ -25,7 +26,7 @@ const formatter = new Intl.DateTimeFormat("zh-CN", {
 <div class="note-list">
   {
     items.map((item) => (
-      <article class="note-item" id={item.slug}>
+      <article class="note-item" id={item.slug ?? item.id}>
         <p class="meta-line">
           <time datetime={item.data.date.toISOString()}>{formatter.format(item.data.date)}</time>
           {item.data.featured && <span>Featured</span>}

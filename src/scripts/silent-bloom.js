@@ -10,15 +10,18 @@ if (app) {
   const meter = app.querySelector("[data-meter]");
   const phaseLabel = app.querySelector("[data-phase-label]");
   const phaseTitle = app.querySelector("[data-phase-title]");
+  const dockPhaseLabel = app.querySelector("[data-dock-phase-label]");
+  const dockPhaseTitle = app.querySelector("[data-dock-phase-title]");
+  const localClock = app.querySelector("[data-local-clock]");
   const resetButton = app.querySelector("[data-reset]");
   const finishButton = app.querySelector("[data-finish]");
   const stepButtons = [...app.querySelectorAll("[data-step]")];
 
   const flowerAssets = [
-    "/images/silent-bloom/flowers/flower-closed.png",
-    "/images/silent-bloom/flowers/flower-half-open.png",
-    "/images/silent-bloom/flowers/flower-open.png",
-    "/images/silent-bloom/flowers/seed-sprout.png"
+    "/images/silent-bloom/flowers/flower-closed.webp",
+    "/images/silent-bloom/flowers/flower-half-open.webp",
+    "/images/silent-bloom/flowers/flower-open.webp",
+    "/images/silent-bloom/flowers/seed-sprout.webp"
   ];
 
   const phases = {
@@ -82,6 +85,8 @@ if (app) {
     const [label, title] = phases[chapter];
     phaseLabel.textContent = label;
     phaseTitle.textContent = title;
+    if (dockPhaseLabel) dockPhaseLabel.textContent = label;
+    if (dockPhaseTitle) dockPhaseTitle.textContent = title;
     stepButtons.forEach((button) => {
       const active = button.dataset.step === chapter;
       button.classList.toggle("is-active", active);
@@ -376,6 +381,16 @@ if (app) {
     moveGuide();
   };
 
+  const updateLocalClock = () => {
+    if (!localClock) return;
+    localClock.textContent = new Intl.DateTimeFormat("zh-CN", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false
+    }).format(new Date());
+  };
+
   pad.addEventListener("pointerdown", handlePointerDown);
   pad.addEventListener("pointermove", handlePointerMove);
   pad.addEventListener("pointerup", handlePointerUp);
@@ -392,4 +407,6 @@ if (app) {
   setGrowth(0);
   setGuidePose("rest");
   scheduleGuideDrift();
+  updateLocalClock();
+  window.setInterval(updateLocalClock, 1000);
 }

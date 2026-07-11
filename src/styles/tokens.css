@@ -14,6 +14,13 @@
   --garden-line: rgba(39, 33, 36, 0.2);
   --garden-soft-line: rgba(241, 229, 208, 0.22);
   --garden-shadow: rgba(32, 24, 28, 0.42);
+  --glass-bg: rgba(241, 229, 208, 0.22);
+  --glass-bg-strong: rgba(241, 229, 208, 0.34);
+  --glass-border: rgba(255, 249, 232, 0.34);
+  --glass-highlight: rgba(255, 255, 255, 0.54);
+  --glass-shadow: 0 18px 48px rgba(39, 33, 36, 0.18);
+  --glass-blur: 18px;
+  --glass-radius: 22px;
 
   --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-serif: Georgia, "Times New Roman", serif;

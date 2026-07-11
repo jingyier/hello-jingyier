@@ -1,0 +1,53 @@
+---
+import GlassNote from "@components/GlassNote.astro";
+import floatingInfo from "../content/floating-info.json";
+
+type FloatingInfoItem = {
+  kind?: string;
+  title: string;
+  body: string;
+  meta?: string;
+  tone?: "mist" | "warm" | "sage";
+  position?: string;
+};
+
+interface Props {
+  page: keyof typeof floatingInfo;
+  variant?: "garden" | "page";
+}
+
+const { page, variant = "page" } = Astro.props;
+const items = (floatingInfo[page] ?? []) as FloatingInfoItem[];
+const hasLocalTime = items.some((item) => item.kind === "local-time");
+---
+
+{
+  items.length > 0 && (
+    <aside class:list={["floating-info-layer", `floating-info-${variant}`]} aria-label="悬浮信息便签">
+      {items.map((item) => <GlassNote {...item} />)}
+    </aside>
+  )
+}
+
+{
+  hasLocalTime && (
+    <script is:inline>
+      {
+        `(() => {
+          const formatter = new Intl.DateTimeFormat("zh-CN", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false
+          });
+          const update = () => {
+            document.querySelectorAll("[data-local-time]").forEach((node) => {
+              node.textContent = formatter.format(new Date());
+            });
+          };
+          update();
+          window.setInterval(update, 30000);
+        })();`
+      }
+    </script>
+  )
+}

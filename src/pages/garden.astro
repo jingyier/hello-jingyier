@@ -1,0 +1,194 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import silentBloomScriptUrl from "../scripts/silent-bloom.js?url";
+
+const backgrounds = [
+  {
+    id: "opening",
+    title: "Opening Silence",
+    label: "触摸前",
+    src: "/images/silent-bloom/backgrounds/opening-silence.webp"
+  },
+  {
+    id: "touch",
+    title: "First Touch",
+    label: "播种",
+    src: "/images/silent-bloom/backgrounds/first-touch.webp"
+  },
+  {
+    id: "breath",
+    title: "Breathing Path",
+    label: "呼吸",
+    src: "/images/silent-bloom/backgrounds/breathing-path.webp"
+  },
+  {
+    id: "crystal",
+    title: "Crystal Resonance",
+    label: "共鸣",
+    src: "/images/silent-bloom/backgrounds/crystal-resonance.webp"
+  },
+  {
+    id: "rain",
+    title: "Seed Rain",
+    label: "雨落",
+    src: "/images/silent-bloom/backgrounds/seed-rain.webp"
+  },
+  {
+    id: "night",
+    title: "Night Garden",
+    label: "保存",
+    src: "/images/silent-bloom/backgrounds/night-result.webp"
+  }
+];
+---
+
+<BaseLayout
+  title="静默花园 · jingyier"
+  description="A small interactive room from jingyier: touch, plant, reset, and save a quiet garden."
+  image="/images/silent-bloom/backgrounds/night-result.webp"
+  pathname="/garden"
+>
+  <main class="garden-app" data-garden-app data-chapter="opening" data-breathing="false" data-resonance="false">
+    <a class="garden-home-link" href="/">jingyier</a>
+    <section class="garden-shell" aria-label="Silent Bloom Garden interactive prototype">
+      <div class="garden-copy">
+        <h1>静默花园</h1>
+        <p class="garden-subtitle">Silent Bloom Garden</p>
+        <p>
+          以触摸播种、呼吸共鸣和夜园保存构成的一次短暂仪式。
+        </p>
+        <div class="garden-timeglass" aria-label="本地时间">
+          <span>本地时间</span>
+          <strong data-local-clock>--:--:--</strong>
+        </div>
+      </div>
+
+      <div class="phone-frame" aria-label="静默花园手机体验">
+        <div class="phone-status" aria-hidden="true">
+          <span>11:48</span>
+          <span class="status-dots">
+            <i></i>
+            <i></i>
+            <i></i>
+          </span>
+        </div>
+
+        <div class="garden-stage" data-stage>
+          <div class="scene-stack" aria-hidden="true">
+            {
+              backgrounds.map((background) => (
+                <img
+                  class="scene-image"
+                  data-scene={background.id}
+                  src={background.src}
+                  alt=""
+                  loading={background.id === "opening" ? "eager" : "lazy"}
+                />
+              ))
+            }
+          </div>
+
+          <div class="paper-grain" aria-hidden="true"></div>
+          <div class="prop-layer" aria-hidden="true">
+            <img
+              class="ground-prop ground-prop-opening"
+              src="/images/silent-bloom/props/glow-moss-blooms.webp"
+              alt=""
+              loading="eager"
+            />
+            <img
+              class="ground-prop ground-prop-touch"
+              src="/images/silent-bloom/props/glow-moss-blooms.webp"
+              alt=""
+              loading="lazy"
+            />
+            <img
+              class="ground-prop ground-prop-breath"
+              src="/images/silent-bloom/props/glow-moss-blooms.webp"
+              alt=""
+              loading="lazy"
+            />
+            <img
+              class="ground-prop ground-prop-crystal"
+              src="/images/silent-bloom/props/glow-moss-blooms.webp"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <svg class="trail-canvas" data-trail viewBox="0 0 390 844" preserveAspectRatio="none" aria-hidden="true">
+            <path data-trail-path d="" />
+          </svg>
+          <div class="seed-rain" data-rain aria-hidden="true"></div>
+          <div class="sprite-layer" data-sprites aria-hidden="true"></div>
+
+          <button class="guide-target" type="button" data-guide aria-label="推进静默花园场景">
+            <img class="guide-image guide-image-rest" src="/images/silent-bloom/props/guide-rest.webp" alt="" loading="eager" />
+            <img class="guide-image guide-image-active" src="/images/silent-bloom/props/guide-active.webp" alt="" loading="lazy" />
+          </button>
+
+          <div class="chapter-panel" aria-live="polite">
+            <span data-phase-label>Opening Silence</span>
+            <strong data-phase-title>一片还没有被触碰的荒原</strong>
+          </div>
+
+          <div class="breath-orb" data-breath-orb aria-hidden="true">
+            <span></span>
+          </div>
+
+          <div class="gesture-pad" data-pad aria-label="只在土壤上滑动播种" role="application"></div>
+        </div>
+
+        <div class="garden-controls" aria-label="Meditation controls">
+          <button class="icon-control" type="button" data-reset aria-label="重置花园">
+            <span aria-hidden="true">↺</span>
+          </button>
+          <div class="ritual-meter" aria-label="花园生长进度">
+            <span data-meter></span>
+          </div>
+          <button class="save-control" type="button" data-finish>保存夜园</button>
+        </div>
+      </div>
+
+      <div class="ritual-dock">
+        <aside class="ritual-map" aria-label="静默花园六章节导航轮盘">
+          <div class="ritual-wheel" aria-hidden="true">
+            <img class="ritual-wheel-art" src="/images/silent-bloom/ui/ritual-wheel-reference.png" alt="" loading="eager" />
+            <div class="ritual-pointer"></div>
+            <div class="ritual-hub"></div>
+            <div class="ritual-runes">
+              {
+                backgrounds.map((background, index) => (
+                  <span style={`--index: ${index};`} data-rune={background.id}></span>
+                ))
+              }
+            </div>
+          </div>
+          <div class="ritual-hit-map">
+            {
+              backgrounds.map((background, index) => (
+                <button
+                  class:list={["chapter-step", index === 0 && "is-active"]}
+                  style={`--index: ${index};`}
+                  type="button"
+                  data-step={background.id}
+                  aria-pressed={index === 0 ? "true" : "false"}
+                  aria-label={`切换到${background.label}章节：${background.title}`}
+                >
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <strong>{background.label}</strong>
+                  <em>{background.title}</em>
+                </button>
+              ))
+            }
+          </div>
+        </aside>
+        <section class="ritual-phase-card" aria-live="polite" aria-label="当前章节">
+          <span data-dock-phase-label>Opening Silence</span>
+          <strong data-dock-phase-title>一片还没有被触碰的荒原</strong>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src={silentBloomScriptUrl}></script>
+</BaseLayout>

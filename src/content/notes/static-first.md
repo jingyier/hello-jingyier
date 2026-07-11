@@ -1,11 +1,11 @@
 ---
-title: 轻一点，但不要散
+title: 静态优先就够了
 date: 2026-07-09
-summary: jingyier 继续保持静态优先，只是把外表从商务目录调成更像个人房间的小站。
+summary: 第一版留言和天气先做成可演示的本地交互，不急着引入后端、定位或外部 API。
 tags:
   - architecture
-  - mood
+  - static
 featured: true
 ---
 
-The first version should be readable, fast, and portable, but it does not need to be overly serious.
+The first version should be readable, fast, and portable before it becomes a connected app.

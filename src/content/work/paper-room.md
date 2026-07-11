@@ -1,11 +1,11 @@
 ---
-title: Main Character Moment
+title: 站点桌面
 year: 2026
-type: Mood scene
-summary: 有一点舞台光，有一点自我宣言：网站不必严肃，也可以像主角登场一样可爱。
+type: Personal site
+summary: 把摘录、留言、小工具和项目入口放在同一张页面上，先让访问者知道这里是谁的地方。
 cover: vector:stage-lattice
-coverAlt: An abstract concrete and rust stage lattice rendered with SVG lines.
+coverAlt: A simple desk-like layout with notes and small tools.
 featured: true
 ---
 
-This scene keeps the site expressive without making the interface heavy.
+The home page is a personal index first, and a project showcase second.

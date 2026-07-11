@@ -1,166 +1,118 @@
 ---
+import { getCollection } from "astro:content";
+import SiteHeader from "@components/SiteHeader.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
-import silentBloomScriptUrl from "../scripts/silent-bloom.js?url";
+import homeData from "../content/home.json";
+import homeScriptUrl from "../scripts/home.js?url";
 
-const backgrounds = [
-  {
-    id: "opening",
-    title: "Opening Silence",
-    label: "触摸前",
-    src: "/images/silent-bloom/backgrounds/opening-silence.png"
-  },
-  {
-    id: "touch",
-    title: "First Touch",
-    label: "播种",
-    src: "/images/silent-bloom/backgrounds/opening-silence.png"
-  },
-  {
-    id: "breath",
-    title: "Breathing Path",
-    label: "呼吸",
-    src: "/images/silent-bloom/backgrounds/breathing-path.png"
-  },
-  {
-    id: "crystal",
-    title: "Crystal Resonance",
-    label: "共鸣",
-    src: "/images/silent-bloom/backgrounds/crystal-resonance.png"
-  },
-  {
-    id: "rain",
-    title: "Seed Rain",
-    label: "雨落",
-    src: "/images/silent-bloom/backgrounds/seed-rain.png"
-  },
-  {
-    id: "night",
-    title: "Night Garden",
-    label: "保存",
-    src: "/images/silent-bloom/backgrounds/night-result.png"
-  }
-];
+const notes = (await getCollection("notes")).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 3);
+const works = (await getCollection("work")).filter((item) => item.data.featured).slice(0, 2);
+const primaryQuote = homeData.quotes[0];
 ---
 
 <BaseLayout
-  title="静默花园 / Silent Bloom Garden"
-  description="A mobile-first interactive meditation garden where slow touch paths plant breathing flowers in a quiet alien meadow."
-  image="/images/silent-bloom/backgrounds/night-result.png"
+  title="jingyier"
+  description="一些摘录、记录、实验和小工具。"
+  pathname="/"
 >
-  <main class="garden-app" data-garden-app data-chapter="opening" data-breathing="false" data-resonance="false">
-    <section class="garden-shell" aria-label="Silent Bloom Garden interactive prototype">
-      <div class="garden-copy">
-        <p class="garden-kicker">Silent Bloom Garden</p>
-        <h1>静默花园</h1>
-        <p>
-          在土壤上慢慢播种。之后轻触漂浮物，让花园一层层进入呼吸、共鸣、雨落与夜色。
-        </p>
-      </div>
+  <main class="home-page" data-home-page>
+    <div class="home-shell">
+      <SiteHeader />
 
-      <div class="phone-frame" aria-label="静默花园手机体验">
-        <div class="phone-status" aria-hidden="true">
-          <span>11:48</span>
-          <span class="status-dots">
-            <i></i>
-            <i></i>
-            <i></i>
-          </span>
+      <section class="home-hero" aria-label="jingyier personal index">
+        <div class="home-intro">
+          <h1>jingyier</h1>
+          <p class="home-lede">一些摘录、记录、实验和小工具。</p>
+          <p class="home-note">
+            这里先不急着解释成一个宏大的项目。它更像一张桌面：放几句话、几条近况、一个可以留言的入口，和一些正在慢慢成形的小东西。
+          </p>
+          <div class="home-actions" aria-label="Main paths">
+            <a href="/notes">读一些记录</a>
+            <a href="/work">看几个项目</a>
+            <a href="/garden">进入静默花园</a>
+          </div>
         </div>
 
-        <div class="garden-stage" data-stage>
-          <div class="scene-stack" aria-hidden="true">
-            {
-              backgrounds.map((background) => (
-                <img
-                  class="scene-image"
-                  data-scene={background.id}
-                  src={background.src}
-                  alt=""
-                  loading={background.id === "opening" ? "eager" : "lazy"}
-                />
-              ))
-            }
-          </div>
-
-          <div class="paper-grain" aria-hidden="true"></div>
-          <div class="prop-layer" aria-hidden="true">
-            <img
-              class="ground-prop ground-prop-opening"
-              src="/images/silent-bloom/props/glow-moss-blooms.png"
-              alt=""
-              loading="eager"
-            />
-            <img
-              class="ground-prop ground-prop-touch"
-              src="/images/silent-bloom/props/glow-moss-blooms.png"
-              alt=""
-              loading="lazy"
-            />
-            <img
-              class="ground-prop ground-prop-breath"
-              src="/images/silent-bloom/props/glow-moss-blooms.png"
-              alt=""
-              loading="lazy"
-            />
-            <img
-              class="ground-prop ground-prop-crystal"
-              src="/images/silent-bloom/props/glow-moss-blooms.png"
-              alt=""
-              loading="lazy"
-            />
-          </div>
-          <svg class="trail-canvas" data-trail viewBox="0 0 390 844" preserveAspectRatio="none" aria-hidden="true">
-            <path data-trail-path d="" />
-          </svg>
-          <div class="seed-rain" data-rain aria-hidden="true"></div>
-          <div class="sprite-layer" data-sprites aria-hidden="true"></div>
-
-          <button class="guide-target" type="button" data-guide aria-label="推进静默花园场景">
-            <img class="guide-image guide-image-rest" src="/images/silent-bloom/props/guide-rest.png" alt="" loading="eager" />
-            <img class="guide-image guide-image-active" src="/images/silent-bloom/props/guide-active.png" alt="" loading="lazy" />
+        <section class="home-tools" aria-label="小工具">
+          <button class="home-tool home-tool-time" type="button" data-tool="time" aria-pressed="true">
+            <span>本地时间</span>
+            <strong data-home-clock>--:--:--</strong>
           </button>
-
-          <div class="chapter-panel" aria-live="polite">
-            <span data-phase-label>Opening Silence</span>
-            <strong data-phase-title>一片还没有被触碰的荒原</strong>
-          </div>
-
-          <div class="breath-orb" data-breath-orb aria-hidden="true">
-            <span></span>
-          </div>
-
-          <div class="gesture-pad" data-pad aria-label="只在土壤上滑动播种" role="application"></div>
-        </div>
-
-        <div class="garden-controls" aria-label="Meditation controls">
-          <button class="icon-control" type="button" data-reset aria-label="重置花园">
-            <span aria-hidden="true">↺</span>
+          <button class="home-tool" type="button" data-tool="weather" aria-pressed="false">
+            <span>天气</span>
+            <strong data-weather-label>点一下看看</strong>
           </button>
-          <div class="ritual-meter" aria-label="花园生长进度">
-            <span data-meter></span>
-          </div>
-          <button class="save-control" type="button" data-finish>保存夜园</button>
-        </div>
-      </div>
+          <button class="home-tool" type="button" data-tool="status" aria-pressed="false">
+            <span>今日状态</span>
+            <strong data-status-label>{homeData.status}</strong>
+          </button>
+        </section>
+      </section>
 
-      <aside class="ritual-map" aria-label="Current ritual state">
-        {
-          backgrounds.map((background, index) => (
-            <button
-              class:list={["chapter-step", index === 0 && "is-active"]}
-              type="button"
-              data-step={background.id}
-              aria-pressed={index === 0 ? "true" : "false"}
-            >
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <strong>{background.label}</strong>
-              <em>{background.title}</em>
-            </button>
-          ))
-        }
-      </aside>
-    </section>
+      <section class="home-grid" aria-label="jingyier index modules">
+        <article class="home-panel home-quote-panel">
+          <div class="panel-heading">
+            <p>摘录</p>
+            <button type="button" data-next-quote>换一句</button>
+          </div>
+          <blockquote data-quote-text>{primaryQuote.text}</blockquote>
+          <p class="panel-meta" data-quote-source>{primaryQuote.source}</p>
+        </article>
+
+        <article class="home-panel home-message-panel">
+          <div class="panel-heading">
+            <p>留言</p>
+            <div class="panel-actions" aria-label="留言操作">
+              <button type="button" data-undo-message>撤回</button>
+              <button type="button" data-clear-messages>清空</button>
+            </div>
+          </div>
+          <div class="message-list" data-message-list>
+            {homeData.messages.map((message) => <p>{message}</p>)}
+          </div>
+          <form class="message-form" data-message-form>
+            <label>
+              <span>写一句话</span>
+              <input name="message" type="text" maxlength="48" autocomplete="off" placeholder="例如：路过，留个记号。" />
+            </label>
+            <button type="submit">留下</button>
+          </form>
+          <p class="panel-meta" data-message-feedback>留言只保存在你的浏览器里。</p>
+        </article>
+
+        <article class="home-panel home-recent-panel">
+          <div class="panel-heading">
+            <p>最近</p>
+            <a href="/notes">Notes</a>
+          </div>
+          <div class="home-list">
+            {notes.map((note) => (
+              <a href={`/notes#${note.id}`}>
+                <span>{note.data.title}</span>
+                <small>{note.data.summary}</small>
+              </a>
+            ))}
+          </div>
+        </article>
+
+        <article class="home-panel home-garden-panel">
+          <div class="panel-heading">
+            <p>项目</p>
+            <a href="/work">Work</a>
+          </div>
+          <div class="home-list">
+            {works.map((work) => (
+              <a href={work.id === "silent-bloom.md" || work.id === "silent-bloom" ? "/garden" : `/work#${work.id}`}>
+                <span>{work.data.title}</span>
+                <small>{work.data.summary}</small>
+              </a>
+            ))}
+          </div>
+        </article>
+      </section>
+    </div>
   </main>
 
-  <script type="module" src={silentBloomScriptUrl}></script>
+  <script type="application/json" id="home-data" set:html={JSON.stringify(homeData)} />
+  <script type="module" src={homeScriptUrl}></script>
 </BaseLayout>

@@ -8,20 +8,20 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 const works = (await getCollection("work")).sort((a, b) => b.data.year - a.data.year);
 ---
 
-<BaseLayout title="Work · jingyier" description="Small scenes, posters, and visual studies from jingyier." pathname="/work">
+<BaseLayout title="Work · jingyier" description="Projects, interface notes, and small experiments from jingyier." pathname="/work">
   <main class="site-shell">
     <SiteHeader />
     <section class="page-intro">
       <p class="eyebrow">Work</p>
-      <h1>几何样本库</h1>
-      <p class="lede">作品不再以照片墙出现，而像嵌在建筑里的矢量标本：年份、类型、摘要被压进同一套静态索引。</p>
+      <h1>项目和实验</h1>
+      <p class="lede">这里放一些正在成形的小项目、界面想法和站点实验。完成度不必相同，但都应该能说清楚它在解决什么。</p>
     </section>
 
     <section class="content-section">
       <SectionHeader
-        eyebrow="Collection"
-        title="静态结构里的小型实验"
-        summary="每个条目保持 Markdown 内容源不变，视觉层只使用 CSS 与 SVG，便于后续扩展而不增加运行时负担。"
+        eyebrow="Selected work"
+        title="可以继续展开的东西"
+        summary="静默花园保留为一个项目房间；其他条目记录这个个人网站本身的结构、工具和界面取舍。"
       />
       <WorkList items={works} />
     </section>

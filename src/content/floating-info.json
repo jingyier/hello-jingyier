@@ -1,0 +1,124 @@
+{
+  "/": [
+    {
+      "kind": "local-time",
+      "title": "Local time",
+      "body": "静默开始前，先让时间慢下来。",
+      "meta": "Asia / browser",
+      "tone": "mist",
+      "position": "left-top"
+    },
+    {
+      "kind": "note",
+      "title": "项目定位",
+      "body": "触摸路径、花朵呼吸和轮盘指针共同组成六阶段体验。",
+      "meta": "Ritual system",
+      "tone": "warm",
+      "position": "left-bottom"
+    },
+    {
+      "kind": "note",
+      "title": "交互提示",
+      "body": "只在土壤上播种；如果不知道下一步，就轻触漂浮物。",
+      "meta": "No weather API",
+      "tone": "sage",
+      "position": "right-top"
+    }
+  ],
+  "/work": [
+    {
+      "kind": "note",
+      "title": "章节档案",
+      "body": "每个条目对应一次花园里的场景、材质或交互判断。",
+      "meta": "6 scenes",
+      "tone": "mist",
+      "position": "right-top"
+    },
+    {
+      "kind": "note",
+      "title": "素材状态",
+      "body": "低饱和背景、手绘花朵与漂浮引导物共同形成这版原型。",
+      "meta": "Local assets",
+      "tone": "warm",
+      "position": "left-bottom"
+    },
+    {
+      "kind": "note",
+      "title": "创作年份",
+      "body": "2026 / 静态优先，互动只作为安静的增强层。",
+      "meta": "Build log",
+      "tone": "sage",
+      "position": "right-bottom"
+    }
+  ],
+  "/notes": [
+    {
+      "kind": "local-time",
+      "title": "Reading time",
+      "body": "把当天的时间放在页边，像一张没有压平的纸。",
+      "meta": "Browser local",
+      "tone": "mist",
+      "position": "right-top"
+    },
+    {
+      "kind": "note",
+      "title": "最近札记",
+      "body": "这里记录节奏、素材、性能预算和那些不必急着解释的微小判断。",
+      "meta": "Garden journal",
+      "tone": "warm",
+      "position": "left-bottom"
+    },
+    {
+      "kind": "note",
+      "title": "原型规则",
+      "body": "安静不是空白，所有视觉反馈都需要服务一次触摸。",
+      "meta": "Prototype rule",
+      "tone": "sage",
+      "position": "right-bottom"
+    }
+  ],
+  "/about": [
+    {
+      "kind": "note",
+      "title": "项目状态",
+      "body": "静默花园是一枚手机优先的冥想原型，也是一座可继续生长的静态小站。",
+      "meta": "Static first",
+      "tone": "mist",
+      "position": "right-top"
+    },
+    {
+      "kind": "message",
+      "title": "留言",
+      "body": "Contact placeholder: hello@jingyier.com / 可替换为社交主页。",
+      "meta": "Open channel",
+      "tone": "warm",
+      "position": "left-bottom"
+    },
+    {
+      "kind": "note",
+      "title": "设计原则",
+      "body": "运行成本接近零，气味、纸感和触摸都要留在第一屏。",
+      "meta": "Design note",
+      "tone": "sage",
+      "position": "right-bottom"
+    }
+  ],
+  "/404": [
+    {
+      "kind": "note",
+      "title": "边界提示",
+      "body": "这条小径还没有长出花。回到入口，重新从土壤开始。",
+      "meta": "404",
+      "tone": "mist",
+      "position": "right-top"
+    },
+    {
+      "kind": "note",
+      "title": "边界信息",
+      "body": "不是所有空白都需要修补，有些只是还没被触碰。",
+      "meta": "Lost note",
+      "tone": "warm",
+      "position": "left-bottom"
+    }
+  ]
+}
