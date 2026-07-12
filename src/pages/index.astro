@@ -50,11 +50,13 @@ const currentTrack = musicData.tracks.find((track) => track.id === musicData.cur
         </article>
 
         <article class="glass-panel home-music-card">
-          <img data-music-cover src={currentTrack.cover} alt={currentTrack.coverAlt} />
-          <div>
-            <p data-music-album>{currentTrack.album}</p>
-            <h2 data-music-title>{currentTrack.title}</h2>
-            <span data-music-artist>{currentTrack.artist}</span>
+          <div class="home-music-head">
+            <img class="home-music-cover" data-music-cover src={currentTrack.cover} alt={currentTrack.coverAlt} />
+            <div class="home-music-copy">
+              <p data-music-album>{currentTrack.album}</p>
+              <h2 data-music-title>{currentTrack.title}</h2>
+              <span data-music-artist>{currentTrack.artist}</span>
+            </div>
           </div>
           <p class="music-credit">作词：{currentTrack.artist}</p>
           <div class="mini-progress"><span>00:00</span><i></i></div>

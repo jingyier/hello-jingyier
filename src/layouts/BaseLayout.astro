@@ -42,6 +42,41 @@ const canonical = new URL(pathname, Astro.site ?? Astro.url.origin);
     <title>{title}</title>
   </head>
   <body>
+    <div class="site-ambient-backdrop" aria-hidden="true">
+      <div class="ambient-slides">
+        <img class="ambient-slide ambient-slide-1" src="/images/ling-cage-background.png" alt="" />
+        <img class="ambient-slide ambient-slide-2" src="/images/ling-cage-background-2.png" alt="" />
+        <img class="ambient-slide ambient-slide-3" src="/images/ling-cage-background-3.png" alt="" />
+        <img class="ambient-slide ambient-slide-4" src="/images/ling-cage-background-4.png" alt="" />
+      </div>
+      <span class="site-frost"></span>
+      <div class="firefly-field">
+        <span class="firefly firefly-1"></span>
+        <span class="firefly firefly-2"></span>
+        <span class="firefly firefly-3"></span>
+        <span class="firefly firefly-4"></span>
+        <span class="firefly firefly-5"></span>
+        <span class="firefly firefly-6"></span>
+        <span class="firefly firefly-7"></span>
+        <span class="firefly firefly-8"></span>
+        <span class="firefly firefly-9"></span>
+        <span class="firefly firefly-10"></span>
+        <span class="firefly firefly-11"></span>
+        <span class="firefly firefly-12"></span>
+        <span class="firefly firefly-13"></span>
+        <span class="firefly firefly-14"></span>
+        <span class="firefly firefly-15"></span>
+        <span class="firefly firefly-16"></span>
+        <span class="firefly firefly-17"></span>
+        <span class="firefly firefly-18"></span>
+        <span class="firefly firefly-19"></span>
+        <span class="firefly firefly-20"></span>
+        <span class="firefly firefly-21"></span>
+        <span class="firefly firefly-22"></span>
+        <span class="firefly firefly-23"></span>
+        <span class="firefly firefly-24"></span>
+      </div>
+    </div>
     <slot />
   </body>
 </html>
