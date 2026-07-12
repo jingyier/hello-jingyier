@@ -1,5 +1,4 @@
 ---
-import musicData from "../content/music.json";
 import musicScriptUrl from "../scripts/music.js?url";
 
 interface Props {
@@ -18,11 +17,10 @@ const links = [
   { href: "/garden", label: "灵境" },
   { href: "/about", label: "关于" }
 ];
-const currentTrack = musicData.tracks.find((track) => track.id === musicData.currentTrackId) ?? musicData.tracks[0];
 const isCurrent = (href: string) => href === "/" ? currentPath === "/" : currentPath.startsWith(href);
 ---
 
-<div class:list={["treasure-site", className]} data-music-root>
+<div class:list={["treasure-site", className]}>
   <header class="treasure-header" aria-label="Site navigation">
     <a class="treasure-brand" href="/" aria-label="jingyier home"><span>jingyier</span><em>の</em>宝藏之地</a>
     <nav>
@@ -36,26 +34,11 @@ const isCurrent = (href: string) => href === "/" ? currentPath === "/" : current
     <slot />
   </main>
 
-  <aside class="quick-dock" aria-label="快捷入口">
-    <a class="dock-grid" href="/" aria-label="回到首页"><span></span><span></span><span></span><span></span></a>
-    <a href="/#messages" aria-label="查看留言">••</a>
-    <a href="/garden" aria-label="进入灵境">◌</a>
-  </aside>
-
-  {!hidePlayer && currentTrack && (
-    <aside class="global-player" aria-label="全局音乐播放器">
-      <a class="global-player-info" href="/music">
-        <img data-music-cover src={currentTrack.cover} alt={currentTrack.coverAlt} />
-        <span>
-          <strong data-music-title>{currentTrack.title}</strong>
-          <small data-music-artist>{currentTrack.artist}</small>
-        </span>
-      </a>
-      <button type="button" data-music-toggle aria-label="切换播放状态"><span></span></button>
-      <button type="button" data-music-next aria-label="下一首">›</button>
+  {!hidePlayer && (
+    <aside class="global-player site-global-player" aria-label="全局音乐播放器" transition:persist>
+      <div class="global-player-shell" data-music-player="fixed"></div>
     </aside>
   )}
 
-  <script type="application/json" id="music-data" set:html={JSON.stringify(musicData)} />
   <script type="module" src={musicScriptUrl}></script>
 </div>

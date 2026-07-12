@@ -4,7 +4,6 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 import SiteShell from "@components/SiteShell.astro";
 import homeData from "../content/home.json";
 import homeScriptUrl from "../scripts/home.js?url";
-import musicData from "../content/music.json";
 
 const notes = (await getCollection("notes")).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 3);
 const works = (await getCollection("work")).filter((item) => item.data.featured).slice(0, 2);
@@ -13,7 +12,6 @@ const dateFormatter = new Intl.DateTimeFormat("zh-CN", {
   month: "2-digit",
   day: "2-digit"
 });
-const currentTrack = musicData.tracks.find((track) => track.id === musicData.currentTrackId) ?? musicData.tracks[0];
 ---
 
 <BaseLayout
@@ -49,21 +47,26 @@ const currentTrack = musicData.tracks.find((track) => track.id === musicData.cur
           </nav>
         </article>
 
-        <article class="glass-panel home-music-card">
-          <div class="home-music-head">
-            <img class="home-music-cover" data-music-cover src={currentTrack.cover} alt={currentTrack.coverAlt} />
-            <div class="home-music-copy">
-              <p data-music-album>{currentTrack.album}</p>
-              <h2 data-music-title>{currentTrack.title}</h2>
-              <span data-music-artist>{currentTrack.artist}</span>
+        <article class="glass-panel home-music-card meting-card">
+          <div class="home-music-glass" data-home-music>
+            <img class="home-music-art" data-home-music-cover src="/images/silent-bloom/backgrounds/crystal-resonance.webp" alt="" />
+            <div class="home-music-main">
+              <p class="home-music-kicker">Cloud Music</p>
+              <a class="home-music-title-link" href="/music" data-home-music-title>云端乐律</a>
+              <strong data-home-music-artist>jingyier</strong>
+              <p class="home-music-credit">作词：<span data-home-music-author>jingyier</span></p>
+              <div class="home-music-progress">
+                <span data-home-music-current>00:00</span>
+                <button type="button" data-home-music-seek aria-label="音乐播放进度">
+                  <i data-home-music-bar></i>
+                </button>
+              </div>
+              <div class="home-music-controls">
+                <button type="button" data-home-music-prev aria-label="上一首">‹</button>
+                <button class="home-music-play" type="button" data-home-music-toggle aria-label="播放或暂停"><span></span></button>
+                <button type="button" data-home-music-next aria-label="下一首">›</button>
+              </div>
             </div>
-          </div>
-          <p class="music-credit">作词：{currentTrack.artist}</p>
-          <div class="mini-progress"><span>00:00</span><i></i></div>
-          <div class="music-controls">
-            <button type="button" data-music-prev aria-label="上一首">‹</button>
-            <button type="button" data-music-toggle aria-label="切换播放状态"><span></span></button>
-            <button type="button" data-music-next aria-label="下一首">›</button>
           </div>
         </article>
       </section>

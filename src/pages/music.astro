@@ -2,53 +2,57 @@
 import BaseLayout from "@layouts/BaseLayout.astro";
 import SiteShell from "@components/SiteShell.astro";
 import musicData from "../content/music.json";
-
-const currentTrack = musicData.tracks.find((track) => track.id === musicData.currentTrackId) ?? musicData.tracks[0];
 ---
 
 <BaseLayout title="音乐 · jingyier" description="云端乐律：jingyier 的音乐接口和播放器预览。" pathname="/music">
   <SiteShell title="音乐" className="music-shell">
-    <section class="treasure-page-hero music-page-hero">
+    <section class="treasure-page-hero music-page-hero" data-music-page>
       <div>
         <h1>云端乐律</h1>
         <p>在代码的缝隙中寻找灵魂的共鸣。</p>
       </div>
       <div class="treasure-search" role="search">
         <span aria-hidden="true"></span>
-        <input type="search" placeholder="搜索曲名、歌单或歌词..." aria-label="搜索音乐" />
+        <input type="search" placeholder="搜索曲名或歌手..." aria-label="搜索音乐" data-music-search />
       </div>
     </section>
 
     <section class="music-layout" aria-label="音乐播放器">
-      <article class="glass-panel music-disc-panel">
-        <div class="disc-art">
-          <img data-music-cover src={currentTrack.cover} alt={currentTrack.coverAlt} />
+      <article class="glass-panel music-disc-panel meting-card meting-card-expanded">
+        <div class="meting-card-head">
+          <div>
+            <p>Netease playlist</p>
+            <h2>云端音律</h2>
+          </div>
+          <span>12735729287</span>
         </div>
-        <div class="music-title-block">
-          <p data-music-album>{currentTrack.album}</p>
-          <h2 data-music-title>{currentTrack.title}</h2>
-          <span data-music-artist>{currentTrack.artist}</span>
+        <div class="page-meting-player meting-player-shell" data-music-player="page"></div>
+        <div class="music-now-playing" aria-live="polite">
+          <span>Now playing</span>
+          <strong data-music-now-title>载入歌单中</strong>
+          <small data-music-now-artist>请稍候</small>
         </div>
-        <div class="music-progress">
-          <i></i>
-          <span>00:00</span>
-          <span data-music-duration>{currentTrack.duration}</span>
-        </div>
-        <div class="music-controls">
-          <button type="button" data-music-prev aria-label="上一首">‹</button>
-          <button type="button" data-music-toggle aria-label="切换播放状态"><span></span></button>
-          <button type="button" data-music-next aria-label="下一首">›</button>
-        </div>
-        <p class="music-mode" data-music-playable>{currentTrack.playable ? "可播放" : "预览模式"}</p>
       </article>
 
-      <article class="glass-panel lyric-panel">
+      <article class="glass-panel lyric-panel music-library-panel">
         <div class="segment-tabs" role="tablist" aria-label="音乐信息">
-          <button type="button" aria-selected="true">歌词</button>
-          <button type="button" aria-selected="false">歌单</button>
+          <button type="button" aria-selected="true" data-music-tab="playlist">歌单</button>
+          <button type="button" aria-selected="false" data-music-tab="lyrics">歌词</button>
         </div>
-        <div class="lyric-lines">
-          {musicData.lyrics.map((line) => <p>{line}</p>)}
+        <div class="music-library-status">
+          <p data-music-count>连接网易云歌单...</p>
+        </div>
+        <div class="music-library-body">
+          <div class="music-track-list" data-music-panel="playlist" data-music-track-list></div>
+          <div class="music-lyrics-view" data-music-panel="lyrics" hidden>
+            <div class="music-lyrics-heading">
+              <p>当前歌词</p>
+              <strong data-music-lyrics-title>等待选择歌曲</strong>
+            </div>
+            <div class="lyric-lines" data-music-lyrics>
+              {musicData.lyrics.map((line) => <p>{line}</p>)}
+            </div>
+          </div>
         </div>
       </article>
     </section>
