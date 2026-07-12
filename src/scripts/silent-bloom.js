@@ -37,12 +37,12 @@ if (app) {
   ];
 
   const phases = {
-    opening: ["Opening Silence", "一片还没有被触碰的荒原"],
-    touch: ["First Touch", "指尖路径正在发芽"],
-    breath: ["Breathing Path", "花朵跟随停留的呼吸开合"],
-    crystal: ["Crystal Resonance", "漂浮物回应路径的光"],
-    rain: ["Seed Rain", "种子雨补全花园"],
-    night: ["Night Garden", "本次路径被保存为夜园"]
+    opening: ["Opening Silence", "原初"],
+    touch: ["First Touch", "伊始"],
+    breath: ["Breathing Path", "花路"],
+    crystal: ["Crystal Resonance", "呼应"],
+    rain: ["Seed Rain", "雨落"],
+    night: ["Night Garden", "夜幕"]
   };
 
   const plantableChapters = new Set(["opening", "touch"]);

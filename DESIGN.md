@@ -158,7 +158,7 @@ D1 表结构由 `db/schema.sql` 维护。第一版审核可在 Cloudflare D1 控
 
 - 静态优先，核心内容不依赖客户端 JavaScript 才可读。
 - 首页小工具、quote、留言、音乐预览和筛选属于 progressive enhancement。
-- 不使用定位或外部天气 API；天气当前只是静态占位 copy。
+- 不使用浏览器定位；天气通过同源 Pages Function 提供，仍保持无密钥和静态 fallback。
 - 不请求外部音乐 API；音乐当前由本地 JSON 和同源 Pages Function 提供。
 - 图片资产优先使用本地 WebP，源文件和授权记录写入 `src/content/assets-log.json`。
 - 构建检查使用 `npm run build`。

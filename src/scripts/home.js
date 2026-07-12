@@ -39,6 +39,8 @@ if (page) {
   const statusNotes = homeData.statusNotes.length > 0 ? homeData.statusNotes : [homeData.status];
   const staticMessages = Array.isArray(homeData.messages) ? homeData.messages : [];
   const isLocalHost = ["localhost", "127.0.0.1", ""].includes(window.location.hostname);
+  const localTime = page.querySelector("#local-time");
+  const weatherInfo = page.querySelector("#weather-info");
   const clock = page.querySelector("[data-home-clock]");
   const weatherLabel = page.querySelector("[data-weather-label]");
   const statusLabel = page.querySelector("[data-status-label]");
@@ -92,6 +94,46 @@ if (page) {
       second: "2-digit",
       hour12: false
     }).format(new Date());
+  };
+
+  const updateLocalTime = () => {
+    if (!localTime) return;
+    localTime.textContent = new Intl.DateTimeFormat("zh-CN", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false
+    }).format(new Date());
+  };
+
+  const formatWeather = (payload) => {
+    const location = String(payload?.location?.name ?? "").trim();
+    const condition = String(payload?.weather?.condition ?? "").trim();
+    const temperature = Number(payload?.weather?.temperature);
+    if (!location && !condition && !Number.isFinite(temperature)) return "--°C";
+    const parts = [];
+    if (location) parts.push(location);
+    if (condition) parts.push(condition);
+    if (Number.isFinite(temperature)) parts.push(`${Math.round(temperature)}°C`);
+    return parts.join(" · ");
+  };
+
+  const loadWeatherInfo = async () => {
+    if (!weatherInfo) return;
+    weatherInfo.textContent = "加载中";
+    try {
+      const response = await fetch("/api/weather", {
+        headers: { accept: "application/json" }
+      });
+      const payload = await response.json().catch(() => null);
+      if (response.ok && payload?.ok) {
+        weatherInfo.textContent = formatWeather(payload);
+        return;
+      }
+      weatherInfo.textContent = "--°C";
+    } catch {
+      weatherInfo.textContent = "--°C";
+    }
   };
 
   const setActiveTool = (toolName) => {
@@ -305,5 +347,8 @@ if (page) {
   renderStoredMessages();
   loadApprovedMessages();
   updateClock();
+  updateLocalTime();
+  loadWeatherInfo();
   window.setInterval(updateClock, 1000);
+  window.setInterval(updateLocalTime, 1000);
 }

@@ -47,7 +47,7 @@ assert("home page has reviewed message containers and honeypot", homePage.includ
 assert("home script submits to same-origin message API first", homeScript.includes("fetch(\"/api/messages\"") && homeScript.includes("审核后会公开显示"));
 assert("home script falls back to local messages when API fails", homeScript.includes("接口暂时不可用") && homeScript.includes("state.messages.push({ body: value"));
 assert("music page and API are present", music.includes("data-music-root") && musicPage.includes("云端乐律") && musicFunction.includes("onRequestGet"));
-assert("music script handles preview playback", musicScript.includes("data-music-toggle") && musicScript.includes("预览模式") && musicScript.includes("/api/music"));
+assert("music script mounts the shared controller", musicScript.includes("data-music-player") && musicScript.includes("window.__jingyierMusic"));
 assert("music content fallback is present", musicData.tracks.length >= 3 && musicData.lyrics.length >= 3);
 assert("garden route keeps app marker", garden.includes("data-garden-app"));
 assert("garden route keeps chapter controls", garden.includes("data-step") && garden.includes("data-reset") && garden.includes("data-finish"));
@@ -119,10 +119,10 @@ const externalOffenders = sourceSnapshots
   .filter(([, contents]) => /https?:\/\/|XMLHttpRequest|navigator\.geolocation|openweathermap|api\.weather/i.test(contents))
   .map(([file]) => file);
 const disallowedFetchOffenders = sourceSnapshots
-  .filter(([, contents]) => /\bfetch\s*\(/.test(contents) && !contents.includes("fetch(\"/api/messages\""))
+  .filter(([, contents]) => /\bfetch\s*\(/.test(contents) && !contents.includes('fetch("/api/messages"') && !contents.includes('fetch("/api/weather"'))
   .map(([file]) => file);
 assert("homepage/content pages make no external API requests", externalOffenders.length === 0, externalOffenders.join(", "));
-assert("homepage fetches only same-origin messages API", disallowedFetchOffenders.length === 0, disallowedFetchOffenders.join(", "));
+assert("homepage fetches only same-origin messages and weather APIs", disallowedFetchOffenders.length === 0, disallowedFetchOffenders.join(", "));
 
 const failures = checks.filter((check) => !check.passed);
 

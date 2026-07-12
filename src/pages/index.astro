@@ -33,33 +33,37 @@ const dateFormatter = new Intl.DateTimeFormat("zh-CN", {
           <img class="profile-avatar" src="/images/silent-bloom/character/meditating-figure.webp" alt="" />
           <div class="profile-copy">
             <h1>jingyier</h1>
-            <p>在摘录、静态站点和小型互动之间穿梭的普通人。近期正在整理个人索引、留言接口和灵境房间。</p>
+            <p>Programmer needs to be trusted.</p>
           </div>
           <div class="profile-stats" aria-label="站点统计">
             <span><strong>{notes.length}</strong><small>近记</small></span>
             <span><strong>{works.length}</strong><small>项目</small></span>
             <span><strong>{homeData.quotes.length}</strong><small>摘录</small></span>
           </div>
-          <nav class="profile-actions" aria-label="Main paths">
-            <a href="/notes">归档</a>
-            <a href="/work">项目</a>
-            <a href="/garden">灵境</a>
-          </nav>
+          <div class="card-footer-info" id="card-footer-info">
+            <div class="card-footer-cell">
+              <span>本地时间</span>
+              <strong id="local-time" aria-live="polite">--:--:--</strong>
+            </div>
+            <div class="card-footer-cell card-footer-weather">
+              <span>天气</span>
+              <strong id="weather-info" aria-live="polite">加载中</strong>
+            </div>
+          </div>
         </article>
 
         <article class="glass-panel home-music-card meting-card">
           <div class="home-music-glass" data-home-music>
             <img class="home-music-art" data-home-music-cover src="/images/silent-bloom/backgrounds/crystal-resonance.webp" alt="" />
             <div class="home-music-main">
-              <p class="home-music-kicker">Cloud Music</p>
-              <a class="home-music-title-link" href="/music" data-home-music-title>云端乐律</a>
-              <strong data-home-music-artist>jingyier</strong>
-              <p class="home-music-credit">作词：<span data-home-music-author>jingyier</span></p>
-              <div class="home-music-progress">
-                <span data-home-music-current>00:00</span>
-                <button type="button" data-home-music-seek aria-label="音乐播放进度">
-                  <i data-home-music-bar></i>
-                </button>
+              <div class="home-music-copy">
+                <a class="home-music-title-link" href="/music" data-home-music-title>云端乐律</a>
+                <div class="home-music-progress">
+                  <span data-home-music-current>00:00</span>
+                  <button type="button" data-home-music-seek aria-label="音乐播放进度">
+                    <i data-home-music-bar></i>
+                  </button>
+                </div>
               </div>
               <div class="home-music-controls">
                 <button type="button" data-home-music-prev aria-label="上一首">‹</button>
@@ -99,20 +103,6 @@ const dateFormatter = new Intl.DateTimeFormat("zh-CN", {
             <p>{works[0]?.data.summary ?? "正在成形的实验和页面。"}</p>
           </a>
         </article>
-        <aside class="glass-panel tool-card" aria-label="小工具">
-          <button class="home-tool" type="button" data-tool="time" aria-pressed="true">
-            <span>本地时间</span>
-            <strong data-home-clock>--:--:--</strong>
-          </button>
-          <button class="home-tool" type="button" data-tool="weather" aria-pressed="false">
-            <span>天气</span>
-            <strong data-weather-label>点一下看看</strong>
-          </button>
-          <button class="home-tool" type="button" data-tool="status" aria-pressed="false">
-            <span>今日状态</span>
-            <strong data-status-label>{homeData.status}</strong>
-          </button>
-        </aside>
       </section>
 
       <section class="home-lists" aria-label="最新内容">

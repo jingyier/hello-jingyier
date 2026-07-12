@@ -50,8 +50,25 @@ const checkMessagesApi = async () => {
   }
 };
 
+const checkWeatherApi = async () => {
+  try {
+    const { url, response, text } = await request("/api/weather");
+    const type = response.headers.get("content-type") ?? "";
+    const data = JSON.parse(text);
+    assert("/api/weather returns JSON", type.includes("json"), type || url);
+    assert(
+      "/api/weather returns ok payload",
+      response.ok && data.ok === true && typeof data.location?.name === "string" && typeof data.weather?.condition === "string",
+      `${response.status} ${url}`
+    );
+  } catch (error) {
+    assert("/api/weather can be fetched", false, error instanceof Error ? error.message : String(error));
+  }
+};
+
 await checkPage("/", ["data-home-page", "id=\"home-data\"", "jingyier"]);
 await checkMessagesApi();
+await checkWeatherApi();
 await checkPage("/garden/", ["data-garden-app", "data-step", "data-reset", "data-finish", "data-fallback-src"]);
 await checkPage("/notes/", ["data-filter-scope", "data-filter-value=\"quote\""]);
 await checkPage("/work/", ["data-filter-scope", "data-filter-value=\"Interactive room\""]);

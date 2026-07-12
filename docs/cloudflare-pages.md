@@ -1,6 +1,6 @@
 # Cloudflare Pages deployment notes
 
-更新时间：2026-07-11
+更新时间：2026-07-12
 
 ## Pages 配置
 
@@ -49,6 +49,48 @@ WHERE id='实际留言ID';
 
 首页只读取 `approved` 留言。D1 binding 未配置或 API 不可用时，首页会继续展示静态留言，并回退到浏览器本地留言。
 
+## 天气接口配置
+
+天气接口使用 Cloudflare Pages Functions 的 `GET /api/weather`，不需要 D1，也不需要把第三方天气密钥暴露到客户端。
+
+1. 新增函数文件：`functions/api/weather.ts`。
+2. 如需自定义城市，在 Pages 项目里配置环境变量：
+    - `WEATHER_LOCATION_NAME`：展示名称，例如 `南昌`
+    - `WEATHER_LATITUDE`：纬度，例如 `28.6829`
+    - `WEATHER_LONGITUDE`：经度，例如 `115.8582`
+    - `WEATHER_TIMEZONE`：时区，例如 `Asia/Shanghai`
+3. 如果不配置环境变量，接口默认使用南昌坐标。
+4. 接口上游使用 Open-Meteo，返回前端可直接渲染的 JSON：
+
+```json
+{
+   "ok": true,
+   "location": {
+      "name": "南昌",
+      "latitude": 28.6829,
+      "longitude": 115.8582,
+      "timezone": "Asia/Shanghai"
+   },
+   "weather": {
+      "condition": "晴",
+      "temperature": 29,
+      "windSpeed": 3.1,
+      "observedAt": "2026-07-12T08:00"
+   }
+}
+```
+
+5. 首页卡片会先显示“加载中”，如果接口失败则回退到 `--°C`。
+6. 本地验证：`astro dev` 默认不运行 Cloudflare Pages Functions。需要先构建，再用 Pages 兼容的本地服务或线上预览环境检查接口。
+
+```bash
+npm run build
+npx wrangler pages dev dist
+```
+
+7. 访问本地 Pages dev 地址或 Cloudflare 预览部署的 `/api/weather`，确认返回 `ok: true`，并且首页的 `#local-time` 与 `#weather-info` 正常刷新。
+8. 如果需要让用户按城市名动态查询天气，需要额外增加一个地理编码 API 调用，把城市名转换为经纬度。当前版本没有这一步，因此只显示环境变量或 query string 指定的地点。
+
 ## 部署后线上检查
 
 ```bash
@@ -61,7 +103,7 @@ npm run verify:deploy
 npm run verify:deploy -- https://preview.example.pages.dev
 ```
 
-这个脚本会请求首页、`/api/messages`、`/garden/`、Notes、Work、RSS、sitemap，以及静默花园的关键 WebP/PNG 图片资源。
+这个脚本会请求首页、`/api/messages`、`/api/weather`、`/garden/`、Notes、Work、RSS、sitemap，以及静默花园的关键 WebP/PNG 图片资源。
 
 ## 静默花园图片不显示排查
 
@@ -78,4 +120,4 @@ npm run verify:deploy -- https://preview.example.pages.dev
 
 ## 真实服务边界
 
-当前版本已接入 D1 留言，但不请求真实天气、不使用定位，也不把 API key 暴露到客户端。天气和全文搜索等方案只记录在 `docs/service-readiness-plan.md`，等服务方案确认后再实现。
+当前版本已接入 D1 留言，并通过同源 Pages Function 提供天气接口 `/api/weather`。天气不使用浏览器定位，密钥也不进入客户端 bundle；如果需要改城市，直接用环境变量覆盖默认坐标即可。全文搜索等方案仍只记录在 `docs/service-readiness-plan.md`，等后续再接。

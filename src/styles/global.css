@@ -3423,10 +3423,13 @@ html {
 }
 
 .home-dashboard {
-  display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(20rem, 0.72fr);
-  gap: clamp(1rem, 2vw, 1.45rem);
+  display: flex;
   align-items: stretch;
+  gap: clamp(1rem, 2vw, 1.45rem);
+}
+
+.home-dashboard > * {
+  flex: 1 1 0;
 }
 
 .profile-panel {
@@ -3473,6 +3476,7 @@ html {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.9rem;
   align-items: end;
+  margin-bottom: 20px;
 }
 
 .profile-stats span {
@@ -3494,6 +3498,47 @@ html {
   color: var(--treasure-faint);
   font-size: 0.8rem;
   text-transform: uppercase;
+}
+
+.card-footer-info {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 20px;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgba(232, 242, 255, 0.12);
+  color: var(--treasure-faint);
+  font-size: 0.84rem;
+}
+
+.card-footer-cell {
+  display: grid;
+  gap: 0.16rem;
+  min-width: 0;
+}
+
+.card-footer-cell span {
+  color: rgba(220, 230, 244, 0.56);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.card-footer-cell strong {
+  color: rgba(238, 242, 255, 0.88);
+  font-size: 1.08rem;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.card-footer-weather {
+  align-items: end;
+  text-align: right;
 }
 
 .profile-actions {
@@ -3602,15 +3647,6 @@ html {
   font-size: 0.88rem;
 }
 
-.home-music-card {
-  display: grid;
-  gap: 0.92rem;
-  align-self: start;
-  align-content: start;
-  min-height: 0;
-  padding: 0;
-}
-
 .home-music-glass {
   display: grid;
   grid-template-columns: 8.2rem minmax(0, 1fr);
@@ -3627,7 +3663,7 @@ html {
 .home-music-art {
   width: min(100%, 8.2rem);
   aspect-ratio: 1;
-  align-self: start;
+  align-self: center;
   border: 1px solid rgba(232, 242, 255, 0.24);
   border-radius: 999px;
   object-fit: cover;
@@ -3636,25 +3672,12 @@ html {
     inset 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
-.home-music-main {
-  display: grid;
-  gap: 0.74rem;
-  min-width: 0;
-}
-
-.home-music-kicker {
-  margin: 0;
-  color: rgba(220, 230, 244, 0.56);
-  font-size: 1.02rem;
-  font-weight: 800;
-}
-
 .home-music-title-link {
   max-width: 100%;
   overflow: hidden;
   color: rgba(255, 255, 255, 0.94);
   font-family: var(--font-sans);
-  font-size: clamp(1.08rem, 1.35vw, 1.28rem);
+  font-size: clamp(1.1rem, 1.55vw, 1.45rem);
   font-weight: 900;
   line-height: 1.22;
   text-decoration: none;
@@ -3662,16 +3685,18 @@ html {
   white-space: nowrap;
 }
 
-.home-music-main strong {
-  color: rgba(238, 242, 255, 0.82);
-  font-size: 1.25rem;
+.home-music-main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem 1rem;
 }
 
-.home-music-credit {
-  margin: 0;
-  color: rgba(220, 230, 244, 0.48);
-  font-size: 1rem;
-  font-weight: 700;
+.home-music-copy {
+  display: grid;
+  gap: 0.42rem;
+  flex: 1 1 14rem;
+  min-width: 0;
 }
 
 .home-music-progress {
@@ -3679,9 +3704,9 @@ html {
   grid-template-columns: auto minmax(0, 1fr);
   gap: 0.9rem;
   align-items: center;
-  margin-top: 0.3rem;
+  width: 100%;
   color: rgba(220, 230, 244, 0.7);
-  font-size: 1rem;
+  font-size: 0.92rem;
   font-weight: 800;
 }
 
@@ -3709,29 +3734,30 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1.25rem;
-  margin-top: 0.8rem;
+  gap: 0.72rem;
+  flex: 0 0 auto;
+  margin-left: auto;
 }
 
 .home-music-controls button {
   display: grid;
   place-items: center;
-  width: 3.2rem;
-  height: 3.2rem;
+  width: 2.5rem;
+  height: 2.5rem;
   border: 0;
-  border-radius: 18px;
+  border-radius: 14px;
   background: rgba(24, 37, 62, 0.52);
   color: rgba(255, 255, 255, 0.88);
   font: inherit;
-  font-size: 1.7rem;
+  font-size: 1.35rem;
   font-weight: 800;
   cursor: pointer;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .home-music-controls .home-music-play {
-  width: 4.7rem;
-  height: 4.7rem;
+  width: 2.82rem;
+  height: 2.82rem;
   border-radius: 999px;
   background: #6267ff;
   box-shadow: 0 18px 42px rgba(98, 103, 255, 0.28);
@@ -3740,19 +3766,26 @@ html {
 .home-music-play span {
   width: 0;
   height: 0;
-  margin-left: 0.22rem;
-  border-top: 0.58rem solid transparent;
-  border-bottom: 0.58rem solid transparent;
-  border-left: 0.9rem solid white;
+  margin-left: 0.14rem;
+  border-top: 0.35rem solid transparent;
+  border-bottom: 0.35rem solid transparent;
+  border-left: 0.56rem solid white;
 }
 
 .home-music-play[data-playing="true"] span {
-  width: 0.9rem;
-  height: 1.2rem;
+  width: 0.6rem;
+  height: 0.76rem;
   margin-left: 0;
   border: 0;
   background:
     linear-gradient(90deg, white 0 34%, transparent 34% 66%, white 66% 100%);
+}
+
+.home-music-card [data-home-music-artist],
+.home-music-card [data-home-music-author],
+.home-music-kicker,
+.home-music-credit {
+  display: none;
 }
 
 .disc-art img,
@@ -3973,31 +4006,6 @@ html {
 .feature-tile p {
   margin: 0;
   color: var(--treasure-muted);
-}
-
-.tool-card {
-  display: grid;
-  gap: 0.6rem;
-  padding: 1rem;
-}
-
-.tool-card .home-tool {
-  display: grid;
-  gap: 0.4rem;
-  padding: 0.8rem 0.9rem;
-  text-align: left;
-}
-
-.tool-card .home-tool span {
-  color: var(--treasure-blue);
-  font-size: 0.74rem;
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-.tool-card .home-tool strong {
-  font-family: var(--font-serif);
-  font-size: 1.6rem;
 }
 
 .home-lists {
@@ -5141,6 +5149,11 @@ html {
 }
 
 @media (max-width: 900px) {
+  .home-dashboard {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
   .home-music-glass {
     grid-template-columns: 6.2rem minmax(0, 1fr);
     min-height: 18rem;
@@ -5156,8 +5169,8 @@ html {
   }
 
   .home-music-controls .home-music-play {
-    width: 4rem;
-    height: 4rem;
+    width: 2.82rem;
+    height: 2.82rem;
   }
 
   .meting-player-shell .aplayer .aplayer-pic,
@@ -5180,12 +5193,20 @@ html {
 }
 
 @media (max-width: 480px) {
+  .home-dashboard {
+    gap: 1rem;
+  }
+
   .home-music-glass {
     grid-template-columns: 1fr;
   }
 
   .home-music-art {
     width: 5.6rem;
+  }
+
+  .home-music-main {
+    align-items: stretch;
   }
 
   .home-music-controls {

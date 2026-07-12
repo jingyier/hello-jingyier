@@ -1,7 +1,7 @@
 ---
-title: 先把入口说清楚
+title: 入口
 date: 2026-07-07
-summary: 个人网站的首页不该只展示一个项目，它要先告诉访客这里是谁、有什么可以看。
+summary: 个人网站的首页。
 tags:
   - structure
   - homepage

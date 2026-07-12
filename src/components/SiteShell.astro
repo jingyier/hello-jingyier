@@ -22,7 +22,7 @@ const isCurrent = (href: string) => href === "/" ? currentPath === "/" : current
 
 <div class:list={["treasure-site", className]}>
   <header class="treasure-header" aria-label="Site navigation">
-    <a class="treasure-brand" href="/" aria-label="jingyier home"><span>jingyier</span><em>の</em>宝藏之地</a>
+    <a class="treasure-brand" href="/" aria-label="jingyier home"><span>jingyier</span></a>
     <nav>
       {links.map((link) => (
         <a href={link.href} aria-current={isCurrent(link.href) ? "page" : undefined}>{link.label}</a>

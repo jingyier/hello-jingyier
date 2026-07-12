@@ -29,6 +29,7 @@ npm run verify:deploy
 - `/about`: glass-cover profile page using existing jingyier copy.
 - `/garden`: Silent Bloom Garden, a separate interactive room. It is not the site homepage identity.
 - `/api/messages`: Cloudflare Pages Function for reviewed visitor messages.
+- `/api/weather`: Cloudflare Pages Function for configured location weather.
 - `/api/music`: Cloudflare Pages Function returning static music metadata.
 
 ## Structure
@@ -73,6 +74,17 @@ UPDATE messages
 SET status='approved'
 WHERE id='paste-the-message-id-here';
 ```
+
+## Weather
+
+The homepage profile card reads `GET /api/weather` and renders `location · condition · temperature`. Weather does not use D1.
+
+- Default location: Nanchang, `Asia/Shanghai`.
+- Optional Cloudflare Pages environment variables: `WEATHER_LOCATION_NAME`, `WEATHER_LATITUDE`, `WEATHER_LONGITUDE`, `WEATHER_TIMEZONE`.
+- Upstream: Open-Meteo, called only from the Pages Function.
+- If the function is unavailable, the card falls back to `--°C`.
+
+Astro's local dev server does not run Cloudflare Pages Functions by itself. Use a Cloudflare Pages preview deployment, or build first and run a Pages-compatible local dev command such as `npx wrangler pages dev dist` when you need to test `/api/weather` and `/api/messages` locally.
 
 ## Music
 
