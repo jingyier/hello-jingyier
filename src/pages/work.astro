@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import SectionHeader from "@components/SectionHeader.astro";
-import SiteHeader from "@components/SiteHeader.astro";
+import SiteShell from "@components/SiteShell.astro";
 import WorkList from "@components/WorkList.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import filterScriptUrl from "../scripts/content-filter.js?url";
@@ -11,27 +11,34 @@ const types = [...new Set(works.map((work) => work.data.type))].sort((a, b) => a
 ---
 
 <BaseLayout title="Work · jingyier" description="Projects, interface notes, and small experiments from jingyier." pathname="/work">
-  <main class="site-shell">
-    <SiteHeader />
-    <section class="page-intro">
-      <p class="eyebrow">Work</p>
-      <h1>项目和实验</h1>
-      <p class="lede">这里放一些正在成形的小项目、界面想法和站点实验。完成度不必相同，但都应该能说清楚它在解决什么。</p>
+  <SiteShell title="项目" className="work-shell">
+    <section class="treasure-page-hero work-page-hero">
+      <a class="back-link" href="/">← 返回上一级</a>
+      <div>
+        <h1>Projects Matrix</h1>
+        <p>项目和实验记录。完成度不必相同，但都应该能说清楚它在解决什么。</p>
+      </div>
+      <div class="treasure-search" role="search">
+        <span aria-hidden="true"></span>
+        <input type="search" placeholder="搜索项目名称、描述或技术栈..." aria-label="搜索项目" />
+      </div>
     </section>
 
-    <section class="content-section" data-filter-scope data-filter-mode="exact">
+    <section class="content-section glass-panel matrix-section" data-filter-scope data-filter-mode="exact">
       <SectionHeader
         eyebrow="Selected work"
         title="可以继续展开的东西"
         summary="静默花园保留为一个项目房间；其他条目记录这个个人网站本身的结构、工具和界面取舍。"
       />
-      <div class="filter-strip" aria-label="按类型筛选 Work">
-        <button type="button" data-filter-value="all" aria-pressed="true">全部</button>
-        {types.map((type) => <button type="button" data-filter-value={type} aria-pressed="false">{type}</button>)}
+      <div class="archive-toolbar">
+        <div class="filter-strip" aria-label="按类型筛选 Work">
+          <button type="button" data-filter-value="all" aria-pressed="true">全部</button>
+          {types.map((type) => <button type="button" data-filter-value={type} aria-pressed="false">{type}</button>)}
+        </div>
+        <p class="filter-status" data-filter-status aria-live="polite">{works.length} 个条目</p>
       </div>
-      <p class="filter-status" data-filter-status aria-live="polite">{works.length} 个条目</p>
       <WorkList items={works} />
     </section>
-  </main>
+  </SiteShell>
   <script type="module" src={filterScriptUrl}></script>
 </BaseLayout>

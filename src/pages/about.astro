@@ -1,5 +1,5 @@
 ---
-import SiteHeader from "@components/SiteHeader.astro";
+import SiteShell from "@components/SiteShell.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
 ---
 
@@ -8,14 +8,15 @@ import BaseLayout from "@layouts/BaseLayout.astro";
   description="About jingyier and this personal static site."
   pathname="/about"
 >
-  <main class="site-shell">
-    <SiteHeader />
-    <section class="about-layout">
-      <div>
-        <p class="eyebrow">About</p>
-        <h1>关于这里</h1>
+  <SiteShell title="关于" className="about-shell">
+    <section class="about-card glass-panel">
+      <div class="about-cover" aria-hidden="true">
+        <img src="/images/silent-bloom/backgrounds/breathing-path.webp" alt="" />
       </div>
+      <img class="about-avatar" src="/images/silent-bloom/character/meditating-figure.webp" alt="" />
       <div class="about-copy">
+        <p class="eyebrow">Hello world, I'm jingyier</p>
+        <h1>关于我</h1>
         <p>
           这是 jingyier 的个人网站。它先用来放摘录、短记、一些小工具和正在试验的页面。
         </p>
@@ -24,11 +25,10 @@ import BaseLayout from "@layouts/BaseLayout.astro";
         </p>
         <p class="contact-line">Contact placeholder: hello@jingyier.com / 或换成你的社交主页</p>
       </div>
-      <div class="about-figure" role="img" aria-label="A quiet glass garden mark made with layered CSS shapes">
-        <span></span>
-        <span></span>
-        <span></span>
+      <div class="segment-tabs" role="tablist" aria-label="关于内容">
+        <button type="button" aria-selected="true">自我介绍</button>
+        <button type="button" aria-selected="false">研究动态</button>
       </div>
     </section>
-  </main>
+  </SiteShell>
 </BaseLayout>

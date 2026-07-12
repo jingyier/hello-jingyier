@@ -1,13 +1,19 @@
 ---
 import { getCollection } from "astro:content";
-import SiteHeader from "@components/SiteHeader.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
+import SiteShell from "@components/SiteShell.astro";
 import homeData from "../content/home.json";
 import homeScriptUrl from "../scripts/home.js?url";
+import musicData from "../content/music.json";
 
 const notes = (await getCollection("notes")).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 3);
 const works = (await getCollection("work")).filter((item) => item.data.featured).slice(0, 2);
 const primaryQuote = homeData.quotes[0];
+const dateFormatter = new Intl.DateTimeFormat("zh-CN", {
+  month: "2-digit",
+  day: "2-digit"
+});
+const currentTrack = musicData.tracks.find((track) => track.id === musicData.currentTrackId) ?? musicData.tracks[0];
 ---
 
 <BaseLayout
@@ -15,26 +21,81 @@ const primaryQuote = homeData.quotes[0];
   description="一些摘录、记录、实验和小工具。"
   pathname="/"
 >
-  <main class="home-page" data-home-page>
-    <div class="home-shell">
-      <SiteHeader />
-
-      <section class="home-hero" aria-label="jingyier personal index">
-        <div class="home-intro">
-          <h1>jingyier</h1>
-          <p class="home-lede">一些摘录、记录、实验和小工具。</p>
-          <p class="home-note">
-            这里先不急着解释成一个宏大的项目。它更像一张桌面：放几句话、几条近况、一个可以留言的入口，和一些正在慢慢成形的小东西。
-          </p>
-          <div class="home-actions" aria-label="Main paths">
-            <a href="/notes">读一些记录</a>
-            <a href="/work">看几个项目</a>
-            <a href="/garden">进入静默花园</a>
-          </div>
+  <SiteShell title="jingyier" className="home-treasure">
+    <div data-home-page>
+      <section class="home-search-hero" aria-label="jingyier search">
+        <div class="treasure-search home-search" role="search">
+          <span aria-hidden="true"></span>
+          <input type="search" placeholder="搜寻标题、描述或标签..." aria-label="搜索站内内容" />
         </div>
+      </section>
 
-        <section class="home-tools" aria-label="小工具">
-          <button class="home-tool home-tool-time" type="button" data-tool="time" aria-pressed="true">
+      <section class="home-dashboard" aria-label="jingyier personal dashboard">
+        <article class="glass-panel profile-panel">
+          <img class="profile-avatar" src="/images/silent-bloom/character/meditating-figure.webp" alt="" />
+          <div class="profile-copy">
+            <h1>jingyier</h1>
+            <p>在摘录、静态站点和小型互动之间穿梭的普通人。近期正在整理个人索引、留言接口和灵境房间。</p>
+          </div>
+          <div class="profile-stats" aria-label="站点统计">
+            <span><strong>{notes.length}</strong><small>近记</small></span>
+            <span><strong>{works.length}</strong><small>项目</small></span>
+            <span><strong>{homeData.quotes.length}</strong><small>摘录</small></span>
+          </div>
+          <nav class="profile-actions" aria-label="Main paths">
+            <a href="/notes">归档</a>
+            <a href="/work">项目</a>
+            <a href="/garden">灵境</a>
+          </nav>
+        </article>
+
+        <article class="glass-panel home-music-card">
+          <img data-music-cover src={currentTrack.cover} alt={currentTrack.coverAlt} />
+          <div>
+            <p data-music-album>{currentTrack.album}</p>
+            <h2 data-music-title>{currentTrack.title}</h2>
+            <span data-music-artist>{currentTrack.artist}</span>
+          </div>
+          <p class="music-credit">作词：{currentTrack.artist}</p>
+          <div class="mini-progress"><span>00:00</span><i></i></div>
+          <div class="music-controls">
+            <button type="button" data-music-prev aria-label="上一首">‹</button>
+            <button type="button" data-music-toggle aria-label="切换播放状态"><span></span></button>
+            <button type="button" data-music-next aria-label="下一首">›</button>
+          </div>
+        </article>
+      </section>
+
+      <section class="lyric-strip" aria-label="摘录">
+        <button type="button" data-next-quote aria-label="换一句摘录">•••••</button>
+        <blockquote data-quote-text>{primaryQuote.text}</blockquote>
+        <p data-quote-source>{primaryQuote.source}</p>
+      </section>
+
+      <section class="feature-mosaic" aria-label="内容入口">
+        <article class="feature-tile feature-tile-large">
+          <a href="/notes">
+            <span>Latest insight</span>
+            <time datetime={notes[0]?.data.date.toISOString()}>{notes[0] ? dateFormatter.format(notes[0].data.date) : "now"}</time>
+            <h2>{notes[0]?.data.title ?? "摘录与短记"}</h2>
+            <p>{notes[0]?.data.summary ?? "保存一些值得回看的句子。"}</p>
+          </a>
+        </article>
+        <article class="feature-tile feature-tile-wide">
+          <a href="/garden">
+            <h2>静默花园</h2>
+            <p>触摸、播种、呼吸与夜园保存。</p>
+          </a>
+        </article>
+        <article class="feature-tile">
+          <a href="/work">
+            <span>Records</span>
+            <h2>{works[0]?.data.title ?? "项目索引"}</h2>
+            <p>{works[0]?.data.summary ?? "正在成形的实验和页面。"}</p>
+          </a>
+        </article>
+        <aside class="glass-panel tool-card" aria-label="小工具">
+          <button class="home-tool" type="button" data-tool="time" aria-pressed="true">
             <span>本地时间</span>
             <strong data-home-clock>--:--:--</strong>
           </button>
@@ -46,45 +107,19 @@ const primaryQuote = homeData.quotes[0];
             <span>今日状态</span>
             <strong data-status-label>{homeData.status}</strong>
           </button>
-        </section>
+        </aside>
       </section>
 
-      <section class="home-grid" aria-label="jingyier index modules">
-        <article class="home-panel home-quote-panel">
-          <div class="panel-heading">
-            <p>摘录</p>
-            <button type="button" data-next-quote>换一句</button>
+      <section class="home-lists" aria-label="最新内容">
+        <article class="glass-panel">
+          <div class="section-line">
+            <p>Recent notes</p>
+            <a href="/notes">全部</a>
           </div>
-          <blockquote data-quote-text>{primaryQuote.text}</blockquote>
-          <p class="panel-meta" data-quote-source>{primaryQuote.source}</p>
-        </article>
-
-        <article class="home-panel home-message-panel">
-          <div class="panel-heading">
-            <p>留言板</p>
-          </div>
-          <div class="message-board-card">
-            <div class="message-list" data-message-approved-list aria-live="polite"></div>
-            <div class="message-list message-list-local" data-message-local-list aria-live="polite"></div>
-            <p class="message-feedback" data-message-feedback>留言会先审核。</p>
-            <form class="message-form" data-message-form>
-              <input class="message-honeypot" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
-              <label>
-                <input name="message" type="text" maxlength="120" autocomplete="off" placeholder="写下想留下的一句。" aria-label="写一句留言" />
-              </label>
-              <button type="submit">留下</button>
-            </form>
-          </div>
-        </article>
-
-        <article class="home-panel home-recent-panel">
-          <div class="panel-heading">
-            <p>最近</p>
-            <a href="/notes">Notes</a>
-          </div>
-          <div class="home-list">
+          <div class="home-index-list">
             {notes.map((note) => (
               <a href={`/notes#${note.id}`}>
+                <time datetime={note.data.date.toISOString()}>{dateFormatter.format(note.data.date)}</time>
                 <span>{note.data.title}</span>
                 <small>{note.data.summary}</small>
               </a>
@@ -92,14 +127,15 @@ const primaryQuote = homeData.quotes[0];
           </div>
         </article>
 
-        <article class="home-panel home-garden-panel">
-          <div class="panel-heading">
-            <p>项目</p>
-            <a href="/work">Work</a>
+        <article class="glass-panel">
+          <div class="section-line">
+            <p>Selected work</p>
+            <a href="/work">全部</a>
           </div>
-          <div class="home-list">
+          <div class="home-index-list">
             {works.map((work) => (
               <a href={work.id === "silent-bloom.md" || work.id === "silent-bloom" ? "/garden" : `/work#${work.id}`}>
+                <time>{work.data.year}</time>
                 <span>{work.data.title}</span>
                 <small>{work.data.summary}</small>
               </a>
@@ -107,8 +143,35 @@ const primaryQuote = homeData.quotes[0];
           </div>
         </article>
       </section>
+
+      <section class="glass-panel message-board" id="messages" aria-label="留言板">
+        <div class="section-line">
+          <p>说说</p>
+          <span>审核后公开</span>
+        </div>
+        <div class="message-paper-flow">
+          <div class="message-list" data-message-approved-list aria-live="polite"></div>
+          <div class="message-list message-list-local" data-message-local-list aria-live="polite"></div>
+        </div>
+        <div class="message-board-card message-writing-area">
+          <div class="message-board-meta">
+            <p class="message-feedback" data-message-feedback>留言会先审核。</p>
+            <div class="message-actions" aria-label="本地留言操作">
+              <button type="button" data-undo-message>撤回本地</button>
+              <button type="button" data-clear-messages>清空本地</button>
+            </div>
+          </div>
+          <form class="message-form" data-message-form>
+            <input class="message-honeypot" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <label>
+              <input name="message" type="text" maxlength="120" autocomplete="off" placeholder="写下想留下的一句。" aria-label="写一句留言" />
+            </label>
+            <button type="submit">留下</button>
+          </form>
+        </div>
+      </section>
     </div>
-  </main>
+  </SiteShell>
 
   <script type="application/json" id="home-data" set:html={JSON.stringify(homeData)} />
   <script type="module" src={homeScriptUrl}></script>

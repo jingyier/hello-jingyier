@@ -37,6 +37,8 @@ if (page) {
   const quotes = homeData.quotes.length > 0 ? homeData.quotes : [{ text: "先把这里当成一张桌面。", source: "fallback" }];
   const weatherNotes = homeData.weatherNotes.length > 0 ? homeData.weatherNotes : [homeData.weather];
   const statusNotes = homeData.statusNotes.length > 0 ? homeData.statusNotes : [homeData.status];
+  const staticMessages = Array.isArray(homeData.messages) ? homeData.messages : [];
+  const isLocalHost = ["localhost", "127.0.0.1", ""].includes(window.location.hostname);
   const clock = page.querySelector("[data-home-clock]");
   const weatherLabel = page.querySelector("[data-weather-label]");
   const statusLabel = page.querySelector("[data-status-label]");
@@ -142,9 +144,12 @@ if (page) {
     const timestamp = document.createElement("time");
     message.className = ["message-letter", className].filter(Boolean).join(" ");
     content.textContent = body;
-    timestamp.textContent = formatMessageTime(createdAt);
-    if (createdAt) timestamp.dateTime = createdAt;
-    message.append(content, timestamp);
+    message.append(content);
+    if (createdAt) {
+      timestamp.textContent = formatMessageTime(createdAt);
+      timestamp.dateTime = createdAt;
+      message.append(timestamp);
+    }
     return message;
   };
 
@@ -184,6 +189,10 @@ if (page) {
   };
 
   const submitRemoteMessage = async (body, website = "") => {
+    if (isLocalHost) {
+      throw new Error("local_message_service_unavailable");
+    }
+
     const response = await fetch("/api/messages", {
       method: "POST",
       headers: {
@@ -201,6 +210,7 @@ if (page) {
 
   const loadApprovedMessages = async () => {
     if (!approvedMessageList) return;
+    if (isLocalHost) return;
     try {
       const response = await fetch("/api/messages", {
         headers: { "accept": "application/json" }
@@ -291,7 +301,7 @@ if (page) {
   showQuote(state.quoteIndex, false);
   showWeather(state.weatherIndex);
   showStatus(state.statusIndex);
-  renderApprovedMessages([]);
+  renderApprovedMessages(staticMessages);
   renderStoredMessages();
   loadApprovedMessages();
   updateClock();

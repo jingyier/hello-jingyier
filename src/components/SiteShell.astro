@@ -1,0 +1,77 @@
+---
+import musicData from "../content/music.json";
+import musicScriptUrl from "../scripts/music.js?url";
+
+interface Props {
+  title?: string;
+  className?: string;
+  hidePlayer?: boolean;
+}
+
+const { title = "jingyier", className = "", hidePlayer = false } = Astro.props;
+const currentPath = Astro.url.pathname;
+const links = [
+  { href: "/", label: "首页" },
+  { href: "/work", label: "项目" },
+  { href: "/notes", label: "归档" },
+  { href: "/music", label: "音乐" },
+  { href: "/garden", label: "灵境" },
+  { href: "/about", label: "关于" }
+];
+const currentTrack = musicData.tracks.find((track) => track.id === musicData.currentTrackId) ?? musicData.tracks[0];
+const isCurrent = (href: string) => href === "/" ? currentPath === "/" : currentPath.startsWith(href);
+---
+
+<div class:list={["treasure-site", className]} data-music-root>
+  <div class="treasure-backdrop" aria-hidden="true">
+    <img src="/images/silent-bloom/backgrounds/night-result.webp" alt="" />
+    <span class="light-dot light-dot-1"></span>
+    <span class="light-dot light-dot-2"></span>
+    <span class="light-dot light-dot-3"></span>
+    <span class="light-dot light-dot-4"></span>
+    <span class="light-dot light-dot-5"></span>
+    <div class="floating-words">
+      <span>Graph Neural Networks</span>
+      <span>MD 模拟什么时候才能出图啊</span>
+      <span>前方高能反应</span>
+      <span>有笨蛋嘛?</span>
+    </div>
+    <div class="grass-line"></div>
+  </div>
+
+  <header class="treasure-header" aria-label="Site navigation">
+    <a class="treasure-brand" href="/" aria-label="jingyier home"><span>jingyier</span><em>の</em>宝藏之地</a>
+    <nav>
+      {links.map((link) => (
+        <a href={link.href} aria-current={isCurrent(link.href) ? "page" : undefined}>{link.label}</a>
+      ))}
+    </nav>
+  </header>
+
+  <main class="treasure-main" aria-label={title}>
+    <slot />
+  </main>
+
+  <aside class="quick-dock" aria-label="快捷入口">
+    <a class="dock-grid" href="/" aria-label="回到首页"><span></span><span></span><span></span><span></span></a>
+    <a href="/#messages" aria-label="查看留言">••</a>
+    <a href="/garden" aria-label="进入灵境">◌</a>
+  </aside>
+
+  {!hidePlayer && currentTrack && (
+    <aside class="global-player" aria-label="全局音乐播放器">
+      <a class="global-player-info" href="/music">
+        <img data-music-cover src={currentTrack.cover} alt={currentTrack.coverAlt} />
+        <span>
+          <strong data-music-title>{currentTrack.title}</strong>
+          <small data-music-artist>{currentTrack.artist}</small>
+        </span>
+      </a>
+      <button type="button" data-music-toggle aria-label="切换播放状态"><span></span></button>
+      <button type="button" data-music-next aria-label="下一首">›</button>
+    </aside>
+  )}
+
+  <script type="application/json" id="music-data" set:html={JSON.stringify(musicData)} />
+  <script type="module" src={musicScriptUrl}></script>
+</div>

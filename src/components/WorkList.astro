@@ -20,36 +20,40 @@ interface Props {
 const { items } = Astro.props;
 ---
 
-<div class="work-grid">
+<div class="work-archive">
   {
     items.map((item, index) => {
       const itemId = item.slug ?? item.id;
       const href = itemId === "silent-bloom.md" || itemId === "silent-bloom" ? "/garden" : `/work#${itemId}`;
       return (
-      <article class="work-item" id={itemId} data-filter-item data-filter-values={item.data.type}>
-        <div class="work-cover" role="img" aria-label={item.data.coverAlt}>
-          <svg viewBox="0 0 320 220" aria-hidden="true" focusable="false">
-            <defs>
-              <linearGradient id={`oxide-${index}`} x1="0" x2="1" y1="0" y2="1">
-                <stop offset="0%" stop-color="currentColor" stop-opacity="0.85" />
-                <stop offset="100%" stop-color="currentColor" stop-opacity="0.16" />
-              </linearGradient>
-            </defs>
-            <path d="M36 172 92 74h84l55 98Z" fill={`url(#oxide-${index})`} />
-            <path d="M92 74h84l33 58H126Z" fill="none" stroke="currentColor" stroke-width="2" />
-            <path d="M36 172h195l43-43" fill="none" stroke="currentColor" stroke-width="2" />
-            <path d="M126 132 92 74 36 172" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.55" />
-            <circle cx="252" cy="48" r="13" fill="currentColor" opacity="0.8" />
-          </svg>
+      <article class:list={["work-entry", item.data.featured && "is-featured"]} id={itemId} data-filter-item data-filter-values={item.data.type}>
+        {item.data.featured && (
+          <div class="work-preview" role="img" aria-label={item.data.coverAlt}>
+            <svg viewBox="0 0 320 220" aria-hidden="true" focusable="false">
+              <defs>
+                <linearGradient id={`oxide-${index}`} x1="0" x2="1" y1="0" y2="1">
+                  <stop offset="0%" stop-color="currentColor" stop-opacity="0.65" />
+                  <stop offset="100%" stop-color="currentColor" stop-opacity="0.08" />
+                </linearGradient>
+              </defs>
+              <path d="M36 172 92 74h84l55 98Z" fill={`url(#oxide-${index})`} />
+              <path d="M92 74h84l33 58H126Z" fill="none" stroke="currentColor" stroke-width="2" />
+              <path d="M36 172h195l43-43" fill="none" stroke="currentColor" stroke-width="2" />
+              <path d="M126 132 92 74 36 172" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.55" />
+              <circle cx="252" cy="48" r="13" fill="currentColor" opacity="0.72" />
+            </svg>
+          </div>
+        )}
+        <div class="work-entry-meta">
+          <time>{item.data.year}</time>
+          <span>{item.data.type}</span>
+          {item.data.featured && <span>Featured</span>}
         </div>
         <div class="work-copy">
-          <p class="meta-line">
-            {item.data.year} / {item.data.type}
-            {item.data.featured && <span>Featured</span>}
-          </p>
           <h3><a href={href}>{item.data.title}</a></h3>
           <p>{item.data.summary}</p>
         </div>
+        <a class="work-entry-link" href={href}>进入</a>
       </article>
       );
     })

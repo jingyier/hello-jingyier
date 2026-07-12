@@ -1,0 +1,45 @@
+{
+  "currentTrackId": "cloud-rhythm",
+  "tracks": [
+    {
+      "id": "cloud-rhythm",
+      "title": "云端乐律",
+      "artist": "jingyier",
+      "album": "Cloud Music",
+      "cover": "/images/silent-bloom/backgrounds/crystal-resonance.webp",
+      "coverAlt": "A soft crystal scene used as abstract music artwork.",
+      "duration": "00:42",
+      "audioSrc": "",
+      "playable": false
+    },
+    {
+      "id": "night-garden",
+      "title": "夜园回声",
+      "artist": "Silent Bloom",
+      "album": "Garden Room",
+      "cover": "/images/silent-bloom/backgrounds/night-result.webp",
+      "coverAlt": "A quiet night garden scene used as abstract music artwork.",
+      "duration": "01:18",
+      "audioSrc": "",
+      "playable": false
+    },
+    {
+      "id": "seed-rain",
+      "title": "种雨未落",
+      "artist": "jingyier",
+      "album": "Sketches",
+      "cover": "/images/silent-bloom/backgrounds/seed-rain.webp",
+      "coverAlt": "A soft seed rain scene used as abstract music artwork.",
+      "duration": "00:57",
+      "audioSrc": "",
+      "playable": false
+    }
+  ],
+  "lyrics": [
+    "把页面放进夜色里",
+    "让入口像微光一样浮起",
+    "如果没有真实音频",
+    "也先保留一段可以继续接入的旋律",
+    "静态站点仍然可以有心跳"
+  ]
+}

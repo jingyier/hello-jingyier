@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content";
 import NoteList from "@components/NoteList.astro";
 import SectionHeader from "@components/SectionHeader.astro";
-import SiteHeader from "@components/SiteHeader.astro";
+import SiteShell from "@components/SiteShell.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import filterScriptUrl from "../scripts/content-filter.js?url";
 
@@ -11,27 +11,33 @@ const tags = [...new Set(notes.flatMap((note) => note.data.tags))].sort((a, b) =
 ---
 
 <BaseLayout title="Notes · jingyier" description="Short notes, quotes, and site records from jingyier." pathname="/notes">
-  <main class="site-shell">
-    <SiteHeader />
-    <section class="page-intro">
-      <p class="eyebrow">Notes</p>
-      <h1>摘录和短记</h1>
-      <p class="lede">这里放一些想保存的话、页面调整记录，以及还没整理成文章的小想法。轻一点，清楚一点。</p>
+  <SiteShell title="归档" className="notes-shell">
+    <section class="treasure-page-hero archive-page-hero">
+      <div>
+        <h1>归档与探索</h1>
+        <p>总计 {notes.length} 篇研究记录。这里放想保存的话、页面调整记录和还没整理成文章的小想法。</p>
+      </div>
+      <div class="treasure-search" role="search">
+        <span aria-hidden="true"></span>
+        <input type="search" placeholder="搜索被封存的知识..." aria-label="搜索短记" />
+      </div>
     </section>
 
-    <section class="content-section" data-filter-scope data-filter-mode="includes">
+    <section class="content-section glass-panel archive-section" data-filter-scope data-filter-mode="includes">
       <SectionHeader
         eyebrow="Recent notes"
         title="最近留下的几条"
         summary="先保留日期、标签和摘要；以后再决定哪些值得扩展成完整文章。"
       />
-      <div class="filter-strip" aria-label="按标签筛选 Notes">
-        <button type="button" data-filter-value="all" aria-pressed="true">全部</button>
-        {tags.map((tag) => <button type="button" data-filter-value={tag} aria-pressed="false">{tag}</button>)}
+      <div class="archive-toolbar">
+        <div class="filter-strip" aria-label="按标签筛选 Notes">
+          <button type="button" data-filter-value="all" aria-pressed="true">全部</button>
+          {tags.map((tag) => <button type="button" data-filter-value={tag} aria-pressed="false">{tag}</button>)}
+        </div>
+        <p class="filter-status" data-filter-status aria-live="polite">{notes.length} 条短记</p>
       </div>
-      <p class="filter-status" data-filter-status aria-live="polite">{notes.length} 条短记</p>
       <NoteList items={notes} />
     </section>
-  </main>
+  </SiteShell>
   <script type="module" src={filterScriptUrl}></script>
 </BaseLayout>
