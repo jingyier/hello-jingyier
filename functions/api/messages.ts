@@ -58,9 +58,9 @@ export const onRequestGet: PagesFunction<Env> = async ({ env }) => {
 
   try {
     const result = await env.DB.prepare(
-      "SELECT id, body, created_at FROM messages WHERE status = ? ORDER BY created_at DESC LIMIT ?"
+      "SELECT id, body, created_at FROM messages WHERE status = ? ORDER BY created_at DESC"
     )
-      .bind("approved", 20)
+      .bind("approved")
       .all<MessageRow>();
 
     const messages = (result.results ?? []).map((message) => ({

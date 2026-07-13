@@ -47,18 +47,25 @@ if (page) {
   const quoteText = page.querySelector("[data-quote-text]");
   const quoteSource = page.querySelector("[data-quote-source]");
   const nextQuote = page.querySelector("[data-next-quote]");
+  const messageDialog = page.querySelector("[data-message-dialog]");
+  const openMessageBoard = page.querySelector("[data-open-message-board]");
+  const closeMessageBoard = page.querySelector("[data-close-message-board]");
+  const toggleMessageFullscreen = page.querySelector("[data-toggle-message-fullscreen]");
   const messageForm = page.querySelector("[data-message-form]");
-  const approvedMessageList = page.querySelector("[data-message-approved-list]");
-  const localMessageList = page.querySelector("[data-message-local-list]");
+  const messageList = page.querySelector("[data-message-list]");
   const messageFeedback = page.querySelector("[data-message-feedback]");
-  const undoMessage = page.querySelector("[data-undo-message]");
-  const clearMessages = page.querySelector("[data-clear-messages]");
+  const messagePrev = page.querySelector("[data-message-prev]");
+  const messageNext = page.querySelector("[data-message-next]");
+  const messagePageStatus = page.querySelector("[data-message-page-status]");
   const tools = [...page.querySelectorAll("[data-tool]")];
+  let approvedMessagesSource = staticMessages;
+  const messagePageSize = 6;
   const state = {
     quoteIndex: 0,
     weatherIndex: 0,
     statusIndex: 0,
-    messages: []
+    messages: [],
+    messagePage: 0
   };
 
   const readStoredJson = (key, fallback) => {
@@ -178,52 +185,73 @@ if (page) {
     }).format(date);
   };
 
+  const normalizeMessageRecord = (value) => {
+    if (typeof value === "string") return null;
+    const body = String(value?.body ?? "").trim();
+    const createdAt = String(value?.createdAt ?? "").trim();
+    if (!body || !createdAt) return null;
+    const time = new Date(createdAt).valueOf();
+    if (Number.isNaN(time)) return null;
+    return { ...value, body, createdAt, time };
+  };
+
+  const getRenderableMessages = () =>
+    [...approvedMessagesSource, ...state.messages]
+      .map(normalizeMessageRecord)
+      .filter(Boolean)
+      .sort((a, b) => b.time - a.time);
+
   const createMessageNode = (value, className = "") => {
-    const body = typeof value === "string" ? value : value?.body;
-    const createdAt = typeof value === "string" ? "" : value?.createdAt;
-    const message = document.createElement("article");
+    const body = value?.body;
+    const createdAt = value?.createdAt;
+    const message = document.createElement("li");
     const content = document.createElement("p");
     const timestamp = document.createElement("time");
     message.className = ["message-letter", className].filter(Boolean).join(" ");
     content.textContent = body;
     message.append(content);
-    if (createdAt) {
-      timestamp.textContent = formatMessageTime(createdAt);
-      timestamp.dateTime = createdAt;
-      message.append(timestamp);
-    }
+    timestamp.textContent = formatMessageTime(createdAt);
+    timestamp.dateTime = createdAt;
+    message.append(timestamp);
     return message;
   };
 
   const createEmptyMessageNode = () => {
-    const message = document.createElement("p");
+    const message = document.createElement("li");
     message.className = "message-empty";
     message.textContent = "暂无公开留言。";
     return message;
   };
 
-  const renderApprovedMessages = (messages) => {
-    if (!approvedMessageList) return;
-    approvedMessageList.textContent = "";
+  const renderMessages = () => {
+    if (!messageList) return;
+    messageList.textContent = "";
+    const messages = getRenderableMessages();
+    const pageCount = Math.max(1, Math.ceil(messages.length / messagePageSize));
+    state.messagePage = Math.min(Math.max(state.messagePage, 0), pageCount - 1);
+    const start = state.messagePage * messagePageSize;
+    const pageMessages = messages.slice(start, start + messagePageSize);
+
     if (messages.length === 0) {
-      approvedMessageList.append(createEmptyMessageNode());
-      return;
+      messageList.append(createEmptyMessageNode());
+    } else {
+      pageMessages.forEach((message) => {
+        messageList.append(createMessageNode(message, message.id ? "is-approved" : "is-new"));
+      });
     }
-    messages.forEach((message) => {
-      const body = typeof message === "string" ? message : message?.body;
-      if (!body) return;
-      approvedMessageList.append(createMessageNode(message, "is-approved"));
-    });
+
+    if (messagePageStatus) messagePageStatus.textContent = `${state.messagePage + 1} / ${pageCount}`;
+    if (messagePrev) messagePrev.disabled = state.messagePage <= 0;
+    if (messageNext) messageNext.disabled = state.messagePage >= pageCount - 1;
+  };
+
+  const renderApprovedMessages = (messages) => {
+    approvedMessagesSource = messages;
+    renderMessages();
   };
 
   const renderStoredMessages = () => {
-    if (!localMessageList) return;
-    localMessageList.textContent = "";
-    state.messages.forEach((value) => {
-      const message = createMessageNode(value, "is-new");
-      message.dataset.userMessage = "true";
-      localMessageList.append(message);
-    });
+    renderMessages();
   };
 
   const persistMessages = () => {
@@ -251,7 +279,7 @@ if (page) {
   };
 
   const loadApprovedMessages = async () => {
-    if (!approvedMessageList) return;
+    if (!messageList) return;
     if (isLocalHost) return;
     try {
       const response = await fetch("/api/messages", {
@@ -295,6 +323,38 @@ if (page) {
     writeStoredJson("quoteIndex", state.quoteIndex);
   });
 
+  openMessageBoard?.addEventListener("click", () => {
+    if (!messageDialog) return;
+    renderMessages();
+    if (typeof messageDialog.showModal === "function") {
+      messageDialog.showModal();
+    } else {
+      messageDialog.setAttribute("open", "");
+    }
+  });
+
+  closeMessageBoard?.addEventListener("click", () => {
+    messageDialog?.close();
+  });
+
+  messageDialog?.addEventListener("click", (event) => {
+    if (event.target === messageDialog) messageDialog.close();
+  });
+
+  toggleMessageFullscreen?.addEventListener("click", () => {
+    messageDialog?.classList.toggle("is-fullscreen");
+  });
+
+  messagePrev?.addEventListener("click", () => {
+    state.messagePage -= 1;
+    renderMessages();
+  });
+
+  messageNext?.addEventListener("click", () => {
+    state.messagePage += 1;
+    renderMessages();
+  });
+
   messageForm?.addEventListener("submit", async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -312,39 +372,17 @@ if (page) {
     } catch {
       state.messages.push({ body: value, createdAt: new Date().toISOString() });
       persistMessages();
+      state.messagePage = 0;
       renderStoredMessages();
       input.value = "";
       setMessageFeedback(storageEnabled ? "接口暂时不可用，已保存在你的浏览器里。" : "接口暂时不可用，已临时留下。刷新页面后不会保留。");
     }
   });
 
-  undoMessage?.addEventListener("click", () => {
-    if (state.messages.length === 0) {
-      setMessageFeedback("还没有可撤回的本地留言。");
-      return;
-    }
-    state.messages.pop();
-    persistMessages();
-    renderStoredMessages();
-    setMessageFeedback("已撤回最后一条本地留言。");
-  });
-
-  clearMessages?.addEventListener("click", () => {
-    if (state.messages.length === 0) {
-      setMessageFeedback("本地留言已经是空的。");
-      return;
-    }
-    state.messages = [];
-    persistMessages();
-    renderStoredMessages();
-    setMessageFeedback("已清空本地保存的留言。");
-  });
-
   showQuote(state.quoteIndex, false);
   showWeather(state.weatherIndex);
   showStatus(state.statusIndex);
   renderApprovedMessages(staticMessages);
-  renderStoredMessages();
   loadApprovedMessages();
   updateClock();
   updateLocalTime();

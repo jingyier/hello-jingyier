@@ -7,11 +7,6 @@ import homeScriptUrl from "../scripts/home.js?url";
 
 const notes = (await getCollection("notes")).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 3);
 const works = (await getCollection("work")).filter((item) => item.data.featured).slice(0, 2);
-const primaryQuote = homeData.quotes[0];
-const dateFormatter = new Intl.DateTimeFormat("zh-CN", {
-  month: "2-digit",
-  day: "2-digit"
-});
 ---
 
 <BaseLayout
@@ -75,20 +70,13 @@ const dateFormatter = new Intl.DateTimeFormat("zh-CN", {
         </article>
       </section>
 
-      <section class="lyric-strip" aria-label="摘录">
-        <button type="button" data-next-quote aria-label="换一句摘录">•••••</button>
-        <blockquote data-quote-text>{primaryQuote.text}</blockquote>
-        <p data-quote-source>{primaryQuote.source}</p>
-      </section>
-
       <section class="feature-mosaic" aria-label="内容入口">
-        <article class="feature-tile feature-tile-large">
-          <a href="/notes">
-            <span>Latest insight</span>
-            <time datetime={notes[0]?.data.date.toISOString()}>{notes[0] ? dateFormatter.format(notes[0].data.date) : "now"}</time>
-            <h2>{notes[0]?.data.title ?? "摘录与短记"}</h2>
-            <p>{notes[0]?.data.summary ?? "保存一些值得回看的句子。"}</p>
-          </a>
+        <article class="feature-tile feature-tile-large message-entry-tile">
+          <button type="button" data-open-message-board aria-haspopup="dialog">
+            <span>Message board</span>
+            <h2>留言板</h2>
+            <p>打开木框留言板，查看带时间戳的真实留言。</p>
+          </button>
         </article>
         <article class="feature-tile feature-tile-wide">
           <a href="/garden">
@@ -105,66 +93,34 @@ const dateFormatter = new Intl.DateTimeFormat("zh-CN", {
         </article>
       </section>
 
-      <section class="home-lists" aria-label="最新内容">
-        <article class="glass-panel">
-          <div class="section-line">
-            <p>Recent notes</p>
-            <a href="/notes">全部</a>
+      <dialog class="message-board-dialog" id="messages" aria-labelledby="message-board-title" data-message-dialog>
+        <div class="message-window">
+          <div class="message-window-controls" aria-label="留言板窗口控制">
+            <button type="button" data-toggle-message-fullscreen aria-label="切换全屏">□</button>
+            <button type="button" data-close-message-board aria-label="关闭留言板">×</button>
           </div>
-          <div class="home-index-list">
-            {notes.map((note) => (
-              <a href={`/notes#${note.id}`}>
-                <time datetime={note.data.date.toISOString()}>{dateFormatter.format(note.data.date)}</time>
-                <span>{note.data.title}</span>
-                <small>{note.data.summary}</small>
-              </a>
-            ))}
-          </div>
-        </article>
-
-        <article class="glass-panel">
-          <div class="section-line">
-            <p>Selected work</p>
-            <a href="/work">全部</a>
-          </div>
-          <div class="home-index-list">
-            {works.map((work) => (
-              <a href={work.id === "silent-bloom.md" || work.id === "silent-bloom" ? "/garden" : `/work#${work.id}`}>
-                <time>{work.data.year}</time>
-                <span>{work.data.title}</span>
-                <small>{work.data.summary}</small>
-              </a>
-            ))}
-          </div>
-        </article>
-      </section>
-
-      <section class="glass-panel message-board" id="messages" aria-label="留言板">
-        <div class="section-line">
-          <p>说说</p>
-          <span>审核后公开</span>
-        </div>
-        <div class="message-paper-flow">
-          <div class="message-list" data-message-approved-list aria-live="polite"></div>
-          <div class="message-list message-list-local" data-message-local-list aria-live="polite"></div>
-        </div>
-        <div class="message-board-card message-writing-area">
-          <div class="message-board-meta">
-            <p class="message-feedback" data-message-feedback>留言会先审核。</p>
-            <div class="message-actions" aria-label="本地留言操作">
-              <button type="button" data-undo-message>撤回本地</button>
-              <button type="button" data-clear-messages>清空本地</button>
+          <section class="message-window-inner">
+            <div class="message-window-head">
+              <span>Message board</span>
+              <h2 id="message-board-title">留言板</h2>
+              <p data-message-feedback>留言会先审核，公开后显示在这里。</p>
             </div>
-          </div>
-          <form class="message-form" data-message-form>
-            <input class="message-honeypot" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
-            <label>
-              <input name="message" type="text" maxlength="120" autocomplete="off" placeholder="写下想留下的一句。" aria-label="写一句留言" />
-            </label>
-            <button type="submit">留下</button>
-          </form>
+            <ul class="message-list" data-message-list aria-live="polite"></ul>
+            <div class="message-pagination" aria-label="留言分页">
+              <button type="button" data-message-prev>上一页</button>
+              <span data-message-page-status>1 / 1</span>
+              <button type="button" data-message-next>下一页</button>
+            </div>
+            <form class="message-form" data-message-form>
+              <input class="message-honeypot" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
+              <label>
+                <input name="message" type="text" maxlength="120" autocomplete="off" placeholder="写下想留下的一句。" aria-label="写一句留言" />
+              </label>
+              <button type="submit">留下</button>
+            </form>
+          </section>
         </div>
-      </section>
+      </dialog>
     </div>
   </SiteShell>
 
