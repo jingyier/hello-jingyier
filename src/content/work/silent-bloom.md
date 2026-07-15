@@ -2,7 +2,12 @@
 title: 静默花园
 year: 2026
 type: Interactive room
-summary: 一个触摸播种的小型互动页面，现在作为 jingyier 站内的项目房间保留。
+summary: 触摸、播种、呼吸与夜园保存组成的互动房间，也是站内视觉系统的一条支线。
+category: 互动实验
+tags:
+  - garden
+  - interaction
+  - visual
 cover: vector:archive-gate
 coverAlt: A small garden room represented by soft geometric lines.
 featured: true

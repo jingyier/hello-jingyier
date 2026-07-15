@@ -6,9 +6,12 @@ interface NoteItem {
     title: string;
     date: Date;
     summary: string;
+    category?: string;
     tags: string[];
     featured: boolean;
   };
+  body: string;
+  Content: any;
 }
 
 interface Props {
@@ -25,20 +28,32 @@ const formatter = new Intl.DateTimeFormat("zh-CN", {
 
 <div class="note-archive note-list">
   {
-    items.map((item) => (
-      <article class:list={["note-entry", item.data.featured && "is-featured"]} id={item.slug ?? item.id} data-filter-item data-filter-values={item.data.tags.join(",")}>
-        <div class="note-entry-date">
-          <time datetime={item.data.date.toISOString()}>{formatter.format(item.data.date)}</time>
-          {item.data.featured && <span>Featured</span>}
-        </div>
-        <div class="note-entry-copy">
-          <h3>{item.data.title}</h3>
-          <p>{item.data.summary}</p>
-          <div class="tag-row" aria-label="Tags">
-            {item.data.tags.map((tag) => <span>{tag}</span>)}
+    items.map((item) => {
+      const category = item.data.category ?? item.data.tags[0] ?? "未分类";
+      const Body = item.Content;
+
+      return (
+        <article
+          class:list={["article-row", "note-entry", item.data.featured && "is-featured"]}
+          id={item.slug ?? item.id}
+          data-archive-card
+          data-expanded="false"
+        >
+          <button class="article-card-toggle" type="button" data-article-toggle aria-expanded="false">
+            <span class="article-row-copy">
+              <span class="article-title">{item.data.title}</span>
+              <span class="article-row-meta">
+                <time datetime={item.data.date.toISOString()}>{formatter.format(item.data.date)}</time>
+                <span>{category}</span>
+              </span>
+              <span class="article-summary">{item.data.summary}</span>
+            </span>
+          </button>
+          <div class="article-fulltext">
+            <Body />
           </div>
-        </div>
-      </article>
-    ))
+        </article>
+      );
+    })
   }
 </div>

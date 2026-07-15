@@ -2,7 +2,12 @@
 title: 静态归档
 year: 2026
 type: Content system
-summary: 为 Notes 和 Work 预留过滤、搜索和归档的结构，但暂时保持纯静态。
+summary: 用内容集合、分类和标签云组织文章，先保持静态生成的速度与可维护性。
+category: 内容系统
+tags:
+  - taxonomy
+  - static
+  - tags
 cover: vector:archive-gate
 coverAlt: A simple archive entrance made from quiet geometric lines.
 featured: false

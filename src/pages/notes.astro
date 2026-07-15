@@ -1,43 +1,178 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import NoteList from "@components/NoteList.astro";
-import SectionHeader from "@components/SectionHeader.astro";
 import SiteShell from "@components/SiteShell.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
-import filterScriptUrl from "../scripts/content-filter.js?url";
 
 const notes = (await getCollection("notes")).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const tags = [...new Set(notes.flatMap((note) => note.data.tags))].sort((a, b) => a.localeCompare(b));
+const noteEntries = await Promise.all(notes.map(async (note) => {
+  const { Content } = await render(note);
+  return { ...note, Content };
+}));
+const tags = [...new Set(noteEntries.flatMap((note) => note.data.tags))].sort((a, b) => a.localeCompare(b));
+const tagCounts = new Map(tags.map((tag) => [tag, noteEntries.filter((note) => note.data.tags.includes(tag)).length]));
+const tagTargets = new Map(tags.map((tag) => [tag, noteEntries.find((note) => note.data.tags.includes(tag))?.slug ?? noteEntries.find((note) => note.data.tags.includes(tag))?.id]));
+
+const monthFormatter = new Intl.DateTimeFormat("en-US", { month: "2-digit" });
+const yearFormatter = new Intl.DateTimeFormat("en-US", { year: "numeric" });
+const groups = [...noteEntries.reduce((map, note) => {
+  const year = yearFormatter.format(note.data.date);
+  const month = monthFormatter.format(note.data.date);
+  const key = `${year}-${month}`;
+  const group = map.get(key) ?? {
+    key,
+    year,
+    month,
+    anchor: `archive-${year}-${month}`,
+    items: []
+  };
+
+  group.items.push(note);
+  map.set(key, group);
+  return map;
+}, new Map<string, { key: string; year: string; month: string; anchor: string; items: typeof noteEntries }>()).values()];
 ---
 
-<BaseLayout title="Notes · jingyier" description="Short notes, quotes, and site records from jingyier." pathname="/notes">
+<BaseLayout title="Archive · jingyier" description="jingyier 的文章与短记归档。" pathname="/notes">
   <SiteShell title="归档" className="notes-shell">
-    <section class="treasure-page-hero archive-page-hero">
-      <div>
-        <h1>归档与探索</h1>
-        <p>总计 {notes.length} 篇研究记录。这里放想保存的话、页面调整记录和还没整理成文章的小想法。</p>
-      </div>
-      <div class="treasure-search" role="search">
-        <span aria-hidden="true"></span>
-        <input type="search" placeholder="搜索被封存的知识..." aria-label="搜索短记" />
-      </div>
-    </section>
-
-    <section class="content-section glass-panel archive-section" data-filter-scope data-filter-mode="includes">
-      <SectionHeader
-        eyebrow="Recent notes"
-        title="最近留下的几条"
-        summary="先保留日期、标签和摘要；以后再决定哪些值得扩展成完整文章。"
-      />
-      <div class="archive-toolbar">
-        <div class="filter-strip" aria-label="按标签筛选 Notes">
-          <button type="button" data-filter-value="all" aria-pressed="true">全部</button>
-          {tags.map((tag) => <button type="button" data-filter-value={tag} aria-pressed="false">{tag}</button>)}
+    <div class="archive-minimal-page">
+      <aside class="archive-rail" aria-label="归档时间线">
+        <div class="archive-title-block">
+          <h1>归档</h1>
+          <p>{notes.length} 篇记录</p>
+          <div class="archive-action-row" aria-label="归档工具">
+            <button type="button" data-archive-open="search">搜索</button>
+            <button type="button" data-archive-open="tags">标签</button>
+          </div>
         </div>
-        <p class="filter-status" data-filter-status aria-live="polite">{notes.length} 条短记</p>
-      </div>
-      <NoteList items={notes} />
-    </section>
+        <nav class="archive-timeline" aria-label="按年月浏览归档">
+          <ol>
+            {groups.map((group) => (
+              <li>
+                <a href={`#${group.anchor}`}>
+                  <span class="timeline-year">{group.year}</span>
+                  <span class="timeline-month">{group.month}</span>
+                  <span class="timeline-count">{group.items.length}</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      </aside>
+
+      <section class="archive-subview" data-archive-subview hidden aria-live="polite">
+        <button class="archive-subview-back" type="button" data-archive-back>返回</button>
+
+        <div class="archive-subpanel" data-archive-panel="search" hidden>
+          <label class="archive-search-field">
+            <span>搜索归档</span>
+            <input type="search" placeholder="输入标题、摘要、分类或标签..." data-archive-search-input />
+          </label>
+          <div class="archive-result-list" data-archive-search-results>
+            {noteEntries.map((note) => {
+              const category = note.data.category ?? note.data.tags[0] ?? "未分类";
+              const id = note.slug ?? note.id;
+              const searchText = [note.data.title, note.data.summary, category, note.data.tags.join(" "), note.body].join(" ");
+              return (
+                <a href={`#${id}`} data-search-result data-search-text={searchText.toLowerCase()}>
+                  <strong>{note.data.title}</strong>
+                  <span>{category}</span>
+                  <small>{note.data.summary}</small>
+                </a>
+              );
+            })}
+          </div>
+        </div>
+
+        <div class="archive-subpanel" data-archive-panel="tags" hidden>
+          <div class="archive-tag-cloud" aria-label="标签词云">
+            {tags.map((tag) => (
+              <a href={`#${tagTargets.get(tag)}`} data-tag-jump style={`--tag-weight: ${tagCounts.get(tag) ?? 1}`}>
+                <span>{tag}</span>
+                <small>{tagCounts.get(tag)}</small>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="article-list-panel" data-archive-home aria-label="归档列表">
+        {groups.map((group) => (
+          <section class="article-month-group" id={group.anchor}>
+            <div class="article-month-heading" aria-hidden="true">
+              <span>{group.year}</span>
+              <strong>{group.month}</strong>
+            </div>
+            <NoteList items={group.items} />
+          </section>
+        ))}
+      </section>
+    </div>
+    <script>
+      const initArchive = () => {
+        const root = document.querySelector(".notes-shell");
+        if (!root || root.dataset.archiveReady === "true") return;
+        root.dataset.archiveReady = "true";
+
+        const subview = root.querySelector("[data-archive-subview]");
+        const home = root.querySelector("[data-archive-home]");
+        const panels = [...root.querySelectorAll("[data-archive-panel]")];
+        const searchInput = root.querySelector("[data-archive-search-input]");
+        const searchResults = [...root.querySelectorAll("[data-search-result]")];
+
+        const openPanel = (name) => {
+          if (!subview || !home) return;
+          home.hidden = true;
+          subview.hidden = false;
+          panels.forEach((panel) => {
+            panel.hidden = panel.dataset.archivePanel !== name;
+          });
+          if (name === "search") searchInput?.focus();
+        };
+
+        const closePanel = () => {
+          if (!subview || !home) return;
+          subview.hidden = true;
+          home.hidden = false;
+          panels.forEach((panel) => {
+            panel.hidden = true;
+          });
+        };
+
+        root.querySelectorAll("[data-archive-open]").forEach((button) => {
+          button.addEventListener("click", () => openPanel(button.dataset.archiveOpen));
+        });
+
+        root.querySelector("[data-archive-back]")?.addEventListener("click", closePanel);
+
+        searchInput?.addEventListener("input", () => {
+          const query = searchInput.value.trim().toLowerCase();
+          searchResults.forEach((result) => {
+            result.hidden = Boolean(query) && !result.dataset.searchText?.includes(query);
+          });
+        });
+
+        root.querySelectorAll("[data-search-result], [data-tag-jump]").forEach((link) => {
+          link.addEventListener("click", () => {
+            closePanel();
+            const target = root.querySelector(link.getAttribute("href"));
+            target?.setAttribute("data-expanded", "true");
+            target?.querySelector("[data-article-toggle]")?.setAttribute("aria-expanded", "true");
+          });
+        });
+
+        root.querySelectorAll("[data-article-toggle]").forEach((button) => {
+          button.addEventListener("click", () => {
+            const card = button.closest("[data-archive-card]");
+            const expanded = card?.getAttribute("data-expanded") === "true";
+            card?.setAttribute("data-expanded", String(!expanded));
+            button.setAttribute("aria-expanded", String(!expanded));
+          });
+        });
+      };
+
+      initArchive();
+      document.addEventListener("astro:page-load", initArchive);
+    </script>
   </SiteShell>
-  <script type="module" src={filterScriptUrl}></script>
 </BaseLayout>

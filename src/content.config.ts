@@ -8,6 +8,8 @@ const work = defineCollection({
     year: z.number(),
     type: z.string(),
     summary: z.string(),
+    category: z.string().optional(),
+    tags: z.array(z.string()).default([]),
     cover: z.string(),
     coverAlt: z.string(),
     featured: z.boolean().default(false)
@@ -20,6 +22,7 @@ const notes = defineCollection({
     title: z.string(),
     date: z.date(),
     summary: z.string(),
+    category: z.string().optional(),
     tags: z.array(z.string()).default([]),
     featured: z.boolean().default(false)
   })
