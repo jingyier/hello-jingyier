@@ -64,17 +64,17 @@ body > :not(.site-ambient-backdrop) {
   width: 106%;
   height: 106%;
   object-fit: cover;
-  filter: blur(8px) saturate(1.14) contrast(1.02) brightness(0.74);
+  filter: blur(10px) saturate(1.12) contrast(1.02) brightness(0.72);
   opacity: 0;
   transform: scale(1.02);
-  animation: ambientSlide 20s ease-in-out infinite;
+  animation: ambientSlide 36s ease-in-out infinite;
   will-change: opacity, transform;
 }
 
 .ambient-slide-1 { animation-delay: 0s; }
-.ambient-slide-2 { animation-delay: 5s; }
-.ambient-slide-3 { animation-delay: 10s; }
-.ambient-slide-4 { animation-delay: 15s; }
+.ambient-slide-2 { animation-delay: 9s; }
+.ambient-slide-3 { animation-delay: 18s; }
+.ambient-slide-4 { animation-delay: 27s; }
 
 .ambient-slide-3,
 .ambient-slide-4 {
@@ -90,9 +90,9 @@ body > :not(.site-ambient-backdrop) {
     radial-gradient(circle at 78% 34%, rgba(83, 153, 171, 0.16), transparent 28rem),
     linear-gradient(180deg, rgba(7, 10, 18, 0.1), rgba(7, 10, 18, 0.52) 72%, rgba(7, 10, 18, 0.74)),
     rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(10px) saturate(1.18);
-  -webkit-backdrop-filter: blur(10px) saturate(1.18);
-  animation: frostBreath 5s ease-in-out infinite;
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  animation: frostBreath 8.5s ease-in-out infinite;
 }
 
 .site-frost::after {
@@ -5676,32 +5676,32 @@ html {
 @keyframes ambientSlide {
   0% {
     opacity: 0;
-    filter: blur(8px) saturate(1.14) contrast(1.02) brightness(0.74);
+    filter: blur(10px) saturate(1.12) contrast(1.02) brightness(0.72);
     transform: scale(1.025);
   }
 
-  6% {
+  8% {
     opacity: 1;
-    filter: blur(1.5px) saturate(1.18) contrast(1.04) brightness(0.82);
-    transform: scale(1.012);
+    filter: blur(0.5px) saturate(1.2) contrast(1.05) brightness(0.84);
+    transform: scale(1.01);
   }
 
-  13% {
+  21% {
     opacity: 1;
-    filter: blur(1.5px) saturate(1.18) contrast(1.04) brightness(0.82);
-    transform: scale(1.012);
+    filter: blur(0.5px) saturate(1.2) contrast(1.05) brightness(0.84);
+    transform: scale(1.01);
   }
 
   25% {
     opacity: 1;
-    filter: blur(8px) saturate(1.14) contrast(1.02) brightness(0.74);
+    filter: blur(10px) saturate(1.12) contrast(1.02) brightness(0.72);
     transform: scale(1.02);
   }
 
   31%,
   100% {
     opacity: 0;
-    filter: blur(8px) saturate(1.14) contrast(1.02) brightness(0.74);
+    filter: blur(10px) saturate(1.12) contrast(1.02) brightness(0.72);
     transform: scale(1.035);
   }
 }
@@ -5709,19 +5709,19 @@ html {
 @keyframes frostBreath {
   0%,
   100% {
-    backdrop-filter: blur(10px) saturate(1.18);
-    -webkit-backdrop-filter: blur(10px) saturate(1.18);
+    backdrop-filter: blur(13px) saturate(1.22);
+    -webkit-backdrop-filter: blur(13px) saturate(1.22);
   }
 
-  16%,
-  34% {
-    backdrop-filter: blur(3px) saturate(1.1);
-    -webkit-backdrop-filter: blur(3px) saturate(1.1);
+  18%,
+  48% {
+    backdrop-filter: blur(2px) saturate(1.08);
+    -webkit-backdrop-filter: blur(2px) saturate(1.08);
   }
 
-  56% {
-    backdrop-filter: blur(10px) saturate(1.18);
-    -webkit-backdrop-filter: blur(10px) saturate(1.18);
+  72% {
+    backdrop-filter: blur(13px) saturate(1.22);
+    -webkit-backdrop-filter: blur(13px) saturate(1.22);
   }
 }
 
