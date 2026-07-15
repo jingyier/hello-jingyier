@@ -3430,7 +3430,7 @@ html {
 .home-dashboard {
   display: flex;
   align-items: stretch;
-  gap: clamp(1rem, 2vw, 1.45rem);
+  gap: clamp(1.25rem, 2.4vw, 1.9rem);
 }
 
 .home-dashboard > * {
@@ -3959,12 +3959,13 @@ html {
 .music-layout,
 .about-card {
   display: grid;
-  gap: clamp(1rem, 2vw, 1.4rem);
+  gap: clamp(1.25rem, 2.4vw, 1.9rem);
 }
 
 .feature-mosaic {
-  grid-template-columns: 1.1fr 1.1fr 0.9fr;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: stretch;
+  margin-top: clamp(1.35rem, 3vw, 2.25rem);
 }
 
 .feature-tile a {
@@ -3999,38 +4000,38 @@ html {
 
 .feature-tile-large a {
   background:
-    linear-gradient(180deg, rgba(19, 26, 40, 0.18), rgba(9, 12, 24, 0.8)),
-    url("/images/silent-bloom/backgrounds/breathing-path.webp") center / cover;
+    linear-gradient(180deg, rgba(18, 29, 44, 0.08), rgba(7, 11, 22, 0.74)),
+    url("/images/home/silent-garden-bg.jpg") center / cover;
 }
 
 .message-entry-tile button {
   align-content: end;
-  color: rgba(68, 48, 28, 0.94);
+  color: rgba(255, 255, 244, 0.96);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 248, 240, 0.04) 32%, rgba(255, 255, 255, 0.02)),
-    url("/images/message-board-bg.png") center / cover;
+    linear-gradient(180deg, rgba(16, 37, 31, 0.08), rgba(5, 13, 16, 0.62)),
+    url("/images/home/message-board-entry-bg.jpg") center / cover;
 }
 
 .message-entry-tile button span {
-  color: rgba(118, 82, 49, 0.88);
+  color: rgba(248, 255, 232, 0.9);
 }
 
 .message-entry-tile button p {
   margin: 0;
-  color: rgba(92, 68, 44, 0.8);
+  color: rgba(247, 255, 232, 0.78);
   line-height: 1.6;
 }
 
 .feature-tile-wide a {
   background:
-    linear-gradient(180deg, rgba(19, 26, 40, 0.1), rgba(9, 12, 24, 0.76)),
-    url("/images/silent-bloom/backgrounds/seed-rain.webp") center / cover;
+    linear-gradient(180deg, rgba(18, 25, 54, 0.08), rgba(7, 10, 25, 0.7)),
+    url("/images/home/silent-garden-bg.jpg") center / cover;
 }
 
 .feature-tile:nth-child(3) a {
   background:
-    linear-gradient(180deg, rgba(19, 26, 40, 0.12), rgba(9, 12, 24, 0.78)),
-    url("/images/silent-bloom/backgrounds/crystal-resonance.webp") center / cover;
+    linear-gradient(180deg, rgba(16, 20, 54, 0.1), rgba(5, 8, 24, 0.72)),
+    url("/images/home/site-desktop-bg.jpg") center / cover;
 }
 
 .feature-tile span,
