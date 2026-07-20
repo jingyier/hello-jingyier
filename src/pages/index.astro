@@ -75,21 +75,21 @@ const works = (await getCollection("work")).filter((item) => item.data.featured)
           <button type="button" data-open-message-board aria-haspopup="dialog">
             <span>Message board</span>
             <h2>留言板</h2>
-            <p>打开木框留言板，查看带时间戳的真实留言。</p>
+            <p>留下你想说的话吧！</p>
           </button>
         </article>
         <article class="feature-tile feature-tile-wide">
           <a href="/garden">
             <span>Silent garden</span>
             <h2>静默花园</h2>
-            <p>触摸、播种、呼吸与夜园保存。</p>
+            <p>一个小型页面交互式设计。</p>
           </a>
         </article>
         <article class="feature-tile">
           <a href="/work">
             <span>Records</span>
             <h2>{works[0]?.data.title ?? "项目索引"}</h2>
-            <p>{works[0]?.data.summary ?? "正在成形的实验和页面。"}</p>
+            <p>{works[0]?.data.summary ?? "正在成形的文档和页面。"}</p>
           </a>
         </article>
       </section>
